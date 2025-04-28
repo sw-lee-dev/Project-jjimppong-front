@@ -1,0 +1,181 @@
+#user-update-container {
+  display: flex;
+  flex-direction: column;
+
+  margin: 0 auto;
+}
+
+#user-update-container .update-image-box {
+  display: flex;
+  justify-content: center;
+}
+
+#user-update-container .update-image-box>.update-image {
+  box-sizing: border-box;
+  border-radius: 75px;
+  border: 1px solid black;
+  margin: 20px 0;
+
+  width: 150px;
+  height: 150px;
+
+  background-size: cover;
+  background-position: 50% 50%;
+}
+
+#user-update-container .user-update-box {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  
+  margin-bottom: 20px;
+}
+
+#user-update-container .user-update-box:hover {
+  cursor: default;  
+}
+
+#user-update-container .user-update-box .user-update-row {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+#user-update-container .user-update-row>.title {
+  font-size: 15px;
+  font-weight: 400;
+}
+
+#user-update-container .user-update-row>.content {
+  box-sizing: border-box;
+  border: 1px solid black;
+  border-radius: 6px;
+  padding: 4px 10px;
+
+  height: 40px;
+  line-height: 175%;
+
+  color: white;
+  background-color: lightgrey;
+}
+
+#user-update-container .user-update-row>input {
+  flex: 1;
+  outline: none;
+
+  box-sizing: border-box;
+  border-radius: 6px;
+  border: 1px solid black;
+
+  padding: 4px 10px;
+
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 175%;
+}
+
+#user-update-container .user-update-row .update-area {
+  display: flex;
+  gap: 16px;
+}
+
+#user-update-container .user-update-row .update-area>input {
+  flex: 1;
+  outline: none;
+
+  box-sizing: border-box;
+  border-radius: 6px;
+  border: 1px solid black;
+
+  padding: 4px 10px;
+
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 175%;
+
+  cursor: default;
+}
+
+#user-update-container .user-update-row .update-area>.button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 100px;
+  height: 40px;
+
+  box-sizing: border-box;
+  border-radius: 6px;
+
+  color: white;
+  font-size: 16px;
+  font-weight: 500;
+
+  background-color: lightskyblue;
+
+  cursor: pointer;
+}
+
+#user-update-container .user-update-row .update-area>.button.disable {
+  background-color: grey;
+
+  color: white;
+  cursor: default;
+}
+
+#user-update-container .user-update-row .update-area>.button.disable:hover {
+  opacity: 1;
+}
+
+#user-update-container .user-update-row .update-area>.button:hover {
+  background-color: rgba(0, 100, 255, 0.8);
+  transition: 0.5s;
+}
+
+#user-update-container .user-update-row .message {
+  height: 13px;
+  font-size: 12px;
+  font-weight: 400;
+}
+
+#user-update-container .user-update-row .message.error {
+  color: rgba(255, 0, 0, 0.6);
+}
+
+#user-update-container .user-update-row .message.success {
+  color: rgba(0, 0, 255, 0.6);
+}
+
+#user-update-container .update-button-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+#user-update-container .update-button-box>.button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  box-sizing: border-box;
+  border: 1px solid black;
+  border-radius: 8px;
+
+  width: 200px;
+  height: 30px;
+
+  color: white;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 175%;
+
+  background-color: black;
+
+  cursor: pointer;
+}
+
+#user-update-container .update-button-box>.button:hover {
+  background-color: #ccc;
+  transition: 0.5s;
+}

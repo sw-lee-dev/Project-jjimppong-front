@@ -1,0 +1,118 @@
+:root {
+    --White: rgba(255, 255, 255, 1);
+    --Grey: rgba(117, 117, 117, 1);
+    --Lightmode-Grey: rgba(64, 64, 64, 1);
+    --Lightmode-Grey2: rgba(138, 146, 166, 1);
+    --Lightmode-Grey3: rgba(238, 238, 238, 1);
+    --Lightmode-Grey4: rgba(113, 113, 113, 1);
+    --Primary: rgba(0, 132, 255, 1);
+    --Second: rgba(0, 132, 255, 0.10);
+    --Error: rgba(255, 84, 64, 1);
+    --Beige: rgba(247, 247, 247, 1);
+  }
+
+  .button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  
+    border-radius: 6px;
+    width: 92px;
+    height: 44px;
+  
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 175%;
+  
+    cursor: pointer;
+  }
+  
+  .button:hover {
+    opacity: 0.85;
+  }
+  
+  .button .stratch{ 
+    height: 100%;
+    align-items: stretch;
+  }
+  
+  .button.fullwidth {
+    box-sizing: border-box;
+    width: 100%;
+  }
+  
+  .button.middle {
+    box-sizing: border-box;
+    width: 144px;
+  }
+  
+  .button.disable {
+    background-color: var(--Lightmode-Grey2);
+  
+    color: white;
+
+    cursor: default;
+  }
+  
+  .button.disable:hover {
+    opacity: 1;
+  }
+  
+  .button.second {
+    background-color: rgba(0, 0, 0, 1);
+  
+    color: white;
+  }
+  
+  .button.primary {
+    background-color: var(--Primary);
+  
+    color: var(--White);
+  }
+  
+  .button.primary {
+    background-color: var(--Primary);
+  
+    color: var(--White);
+  }
+
+  .button.error {
+    background-color: var(--Error);
+  
+    color: var(--White);
+  }
+  
+  .link {
+    color: var(--Lightmode-Grey4);
+  
+    text-align: center;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 175%;
+  
+    cursor: pointer;
+  }
+
+  .button-black {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  
+    /* background-color: #fff; */
+    background-color: black;
+    border: 1px solid #dadce0;
+    color: #fff;
+    /* color: #3c4043; */
+  
+    padding: 12px 24px;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: box-shadow 0.3s ease;
+    font-family: "Roboto", sans-serif;
+  }
+  
+  .button-black:hover {
+    box-shadow: 0 1px 2px rgba(60, 64, 67, 0.3), 0 1px 3px rgba(60, 64, 67, 0.15);
+  }

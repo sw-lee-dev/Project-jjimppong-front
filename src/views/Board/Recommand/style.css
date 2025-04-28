@@ -1,0 +1,112 @@
+#board-list-wrapper{
+    height: fit-content;
+    min-height: 100vh;
+}
+
+#board-list-wrapper .board-list-container{
+    display: flex;
+    flex-direction: column;
+    padding: 100px;
+    justify-content: center;
+    align-items: center;
+}
+
+#board-list-wrapper .board-list-title{
+    margin: 50px;
+    font-size: 2rem;
+}
+
+#board-list-wrapper .board-list-container .category-tabs{
+    margin: auto;
+    width: 80%;
+    max-width: max-content;
+}
+
+#board-list-wrapper .board-list-container .category-tabs button{
+    width: 200px;
+    background-color: white;
+    border: none;
+    border-bottom: 3px solid #ccc;
+    padding-top: 30px;
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+#board-list-wrapper .board-list-container .category-tabs button.active{
+    border-bottom: 3px solid gray;
+
+}
+
+#board-list-wrapper .board-list-container .category-tabs button:hover{
+    background-color: #ccc;
+    transition: 0.5s;
+}
+
+#board-list-wrapper .recommand-board-list{
+    margin: auto;
+    gap: 50px;
+    /* background-color: antiquewhite; */
+    padding: 100px;
+    display: grid;
+    /* 3열, 각각 동일 너비 */
+    grid-template-columns: repeat(3, 1fr);
+    /* 2행, 높이는 콘텐츠에 따라 자동 */
+    grid-template-rows: repeat(2, auto);
+}
+
+.card-body{
+    display: inline-block;
+    background-color: white;
+    width: 300px;
+    height: 350px;
+    border-radius: 10px;
+    gap: 10px;
+    padding: 10px;
+    border: 2px solid #ccc;
+}
+
+.card-body:hover{
+    background-color: #ebebeb;
+    color: rgb(226, 115, 75);
+    transition: 0.5s;
+}
+
+.card-body .card-first-wrap{
+    /*border: solid black 1px;*/
+    min-width: 80%;
+    min-height: 60%;
+    background-color: #ccc;
+}
+
+
+.card-body .card-second-wrap{
+    /* border: solid black 1px; */
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 10px;
+}
+
+.card-body .card-second-wrap .card-good{
+    display: flex;
+    gap: 10px;
+    justify-content: space-between;
+}
+
+.card-body .card-third-wrap{
+    /* border: solid black 1px; */
+    display: flex;
+    padding: 20px 10px;
+    gap: 10px;
+}
+
+.card-body .card-board-tier{
+    display: inline-block;
+    /* border: solid black 1px; */
+    gap: 8px;
+}
+
+.card-body .card-writer-nickname{
+    display: inline-block;
+    /* border: solid black 1px; */
+    gap: 8px;
+}

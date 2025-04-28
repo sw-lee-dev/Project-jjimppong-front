@@ -1,0 +1,73 @@
+/* 지역 선택 모달 전체 영역 */
+.region-modal-body {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 20px;
+}
+
+/* 선택 1, 선택 2 섹션 */
+.region-section {
+  display: flex;
+  flex-direction: column;
+}
+
+/* 선택 1, 2 라벨 */
+.region-label {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+/* 선택 버튼 리스트 */
+.region-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+/* 개별 지역 버튼 */
+.region-button {
+  padding: 8px 14px;
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  font-size: 14px;
+  color: #333;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.region-button:hover {
+  background-color: #e0e0e0;
+}
+
+.region-button.selected {
+  background-color: #1976d2;
+  border-color: #1976d2;
+  color: #fff;
+}
+
+/* 선택 완료 버튼 영역 */
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+/* 선택 완료 버튼 */
+.confirm-button {
+  padding: 10px 20px;
+  border-radius: 6px;
+  background-color: #ddd;
+  color: #fff;
+  border: none;
+  font-size: 15px;
+  cursor: not-allowed;
+  transition: background-color 0.2s ease;
+}
+
+.confirm-button.active {
+  background-color: #1976d2;
+  cursor: pointer;
+}

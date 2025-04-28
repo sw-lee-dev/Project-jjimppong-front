@@ -1,0 +1,47 @@
+#auth-wrapper {
+    display: flex;
+  }
+  
+  #auth-wrapper .auth-box {
+    flex: 1;
+  
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  
+    box-sizing: border-box;
+    padding-left: 100px;
+    padding-right: 100px;
+    min-width: 610px;
+  }
+  
+  #auth-wrapper .divider {
+    border-top: 1px solid var(rgbx);
+    width: 64px;
+  }
+  
+  .sns-button.kakao {
+    background-image: url('/src/assets/images/kakao.png');
+  }
+  
+  .sns-button.naver {
+    background-image: url('/src/assets/images/naver.png');
+  }
+  
+  .spinner {
+    width: 14px;
+    height: 14px;
+    border: 2px solid #fff;
+    border-top: 2px solid #4285f4;
+    border-radius: 50%;
+    display: inline-block;
+    animation: spin 1s linear infinite;
+    margin-right: 6px;
+    vertical-align: middle;
+  }
+  
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }

@@ -1,0 +1,87 @@
+#mypage-password-modal-wrapper {
+  margin: 0 auto;
+}
+
+#mypage-password-modal-wrapper .password-recheck-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.password-recheck-container > .input-contents {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.password-recheck-container .input-area {
+  display: flex;
+  gap: 10px;
+}
+
+.password-recheck-container .input-area>input {
+  flex: 1;
+  outline: none;
+
+  box-sizing: border-box;
+  border-radius: 6px;
+  border: 1px solid black;
+
+  padding: 4px 16px;
+  height: 40px;
+
+  color: black;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 175%;
+}
+
+.password-recheck-container>input::placeholder {
+  color: grey;
+}
+
+.password-recheck-container .button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  box-sizing: border-box;
+  border-radius: 6px;
+  width: 110px;
+  height: 40px;
+
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 175%;
+
+  cursor: pointer;
+}
+
+.password-recheck-container .button.disable {
+  background-color: grey;
+  
+  color: white;
+  cursor: default;
+}
+
+.password-recheck-container .button.disable:hover {
+  opacity: 1;
+}
+
+.password-recheck-container .button.able {
+  background-color: lightskyblue;
+  
+  color: white;
+}
+
+.password-recheck-container .button.able:hover {
+  background-color: rgba(0, 100, 255, 0.8);
+  transition: 0.5s;
+}
+
+.password-recheck-container .error-message {
+  height: 16px;
+
+  color: rgba(255, 0, 0, 0.5);
+  font-size: 13px;
+  font-weight: 400;
+}

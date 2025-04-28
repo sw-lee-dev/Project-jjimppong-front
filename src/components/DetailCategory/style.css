@@ -1,0 +1,88 @@
+@font-face {
+    font-family: 'Ownglyph_ParkDaHyun';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2411-3@1.0/Ownglyph_ParkDaHyun.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+#detail-wrapper{
+    position: relative;
+}
+
+#detail-wrapper label {
+    padding: 25px;
+    font-size: 1.2rem;
+}
+
+#detail-wrapper ul{
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+    background-color: white;
+    border-radius: 5px;
+    border: solid lightgray 2px;
+    padding-left:0;
+    margin-left:0;
+}
+
+#detail-wrapper li{
+    background-color: lightgray;
+    display: inline-block;
+    margin: 8px;
+}
+
+#detail-wrapper .detailSelect-wrapper {
+    position: relative; /* dropdown 기준 */
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    width: 90%;
+    height: auto;
+}
+
+#detail-wrapper .detailSelect-wrapper .detailSelect-toggle{
+    position: absolute;
+    width: 100%;
+    left: 4%;
+    padding-left: 8px;
+    height: 35px;
+    box-sizing: border-box;
+    background-color: white;
+    border-radius: 5px;
+    border: solid lightgray 1px;
+}
+
+#detail-wrapper .detailSelect-wrapper .detailSelect-toggle:hover{
+    background-color: #ccc;
+    transition: 0.3s;
+}
+
+#detail-wrapper .detailSelect-wrapper .detailSelect-toggle::after{
+    content: '▾';
+    font-size: 1.5rem;
+    float: right;
+    color: gray;
+}
+
+#detail-wrapper .detail-dropdown-list {
+    position: absolute;
+    top: 40px;
+    left: 23px;
+    width: 100%;
+    background-color: white;
+    border-radius: 5px;
+    border: solid gray 2px;
+    z-index: 10;
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+#detail-wrapper .detail-dropdown-list li {
+    background-color: lightgray;
+    padding: 8px 12px;
+    margin: 4px 0;
+    cursor: pointer;
+    display: block; 
+}

@@ -1,0 +1,86 @@
+/* NaverMap.jsx */
+.toggle-header {
+    font-size: 16px;
+    font-weight: bold;
+    background-color: transparent;
+    border: none;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+    padding: 8px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.input {
+    width: 100%;
+    padding: 8px 12px;
+    margin: 8px 0;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+.action-button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 8px;
+    background-color: #38bdf8;
+    border: none;
+    border-radius: 8px;
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.action-hover {
+    background-color: #0ea5e9;
+}
+
+.map-container {
+    display: flex;
+    height: 100vh;
+    padding-top: 55px;
+}
+
+.map {
+    flex: 1;
+}
+
+.panel {
+    width: 400px;
+    padding: 20px;
+    background: #f8f9fa;
+    overflow-y: auto;
+    border-left: 1px solid #ddd;
+}
+
+.card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.cardTitle {
+    margin-bottom: 10px;
+}
+
+.list {
+    padding-left: 20px;
+}
+
+.closeButton {
+    width: 100%;
+    padding: 10px;
+    background-color: #dc3545;
+    border: none;
+    border-radius: 8px;
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+}

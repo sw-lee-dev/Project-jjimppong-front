@@ -1,0 +1,287 @@
+#mypage-main-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+
+  margin: 0 auto;
+  padding-top: 52px;
+  min-width: 800px;
+}
+
+#mypage-main-wrapper .user-container {
+  display: flex;
+  height: 200px;
+
+  position: relative;
+}
+
+#mypage-main-wrapper .user-card {
+  display: flex;
+  flex-direction: column;
+
+  box-sizing: border-box;
+  border: 2px rgba(255, 70, 0, 0.6);
+  border-radius: 10px;
+  border-style: dashed;
+
+  width: 200px;
+  height: 164px;
+  
+  position: absolute;
+  top: 20px;
+  right: 100px;
+
+  z-index: 80;
+}
+
+#mypage-main-wrapper .user-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+
+  box-sizing: border-box;
+  padding: 10px 10px;
+}
+
+#mypage-main-wrapper .user-box>.user-level-icon {
+  position: relative;
+  
+  width: 40px;
+  height: 40px;
+
+  background-size: cover;
+  background-position: 50% 50%;
+
+  cursor: pointer;
+}
+
+#mypage-main-wrapper .user-box>.user-level-icon::before {
+  position: absolute;
+  top: 0;
+  left: -75%;
+  display: block;
+  content: '';
+  width: 50%;
+  height: 100%;
+  background: -webkit-linear-gradient(left, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.3) 100%);
+  background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.3) 100%);
+  -webkit-transform: skewX(-25deg);
+  transform: skewX(-25deg);
+  opacity: 0;
+}
+
+#mypage-main-wrapper .user-box>.user-level-icon:hover::before {
+  -webkit-animation: shine 1s infinite;
+  animation: shine 1s linear infinite;
+}
+
+@-webkit-keyframes shine {
+  0% {
+    left: -75%;
+    opacity: 0;
+  }
+  40% {
+    opacity: 1;
+  }
+  100% {
+    left: 125%;
+    opacity: 0;
+  }
+}
+
+@keyframes shine {
+  0% {
+    left: -75%;
+    opacity: 0;
+  }
+  40% {
+    opacity: 1;
+  }
+  100% {
+    left: 125%;
+    opacity: 0;
+  }
+}
+
+#mypage-main-wrapper .user-level-container {
+  display: flex;
+}
+
+.user-level-container .user-level-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 70px;
+
+  height: 40px;
+}
+
+.user-level-container .user-level,
+.user-level-container .user-score {
+  font-size: 18px;
+  font-weight: 400;
+}
+
+#mypage-main-wrapper .user-box>.user-nickname {
+  flex: 1;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 125%;
+  
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#mypage-main-wrapper .user-button-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+
+  box-sizing: border-box;
+  padding: 10px 0;
+}
+
+#mypage-main-wrapper .user-button-box>.info-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  box-sizing: border-box;
+  border: 1px solid black;
+  border-radius: 8px;
+
+  width: 180px;
+  height: 30px;
+
+  color: white;
+  background-color: black;
+
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 175%;
+  
+  cursor: pointer;
+}
+
+#mypage-main-wrapper .user-button-box>.info-button:hover {
+  background-color: #ccc;
+  transition: 0.5s;
+}
+
+#mypage-main-wrapper .my-board-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+#mypage-main-wrapper .my-board-title {
+  padding: 0 100px;
+
+  font-size: 30px;
+  font-weight: 800;
+}
+
+#mypage-main-wrapper .my-board-title>.divider {
+  margin-top: 10px;
+  border-top: 1px solid;
+  width: 100%;
+}
+
+#mypage-main-wrapper .no-boards-message {
+  text-align: center;
+
+  box-sizing: border-box;
+  padding: 50px 30px;
+  min-height: 800px;
+
+  font-size: 25px;
+  font-weight: 600;
+  line-height: 300px;
+}
+
+#mypage-main-wrapper .board-box {
+  display: flex;
+  gap: 25px;
+
+  margin: 2px 100px;
+
+  box-sizing: border-box;
+  padding: 10px;
+
+  border: 1px solid grey;
+  border-radius: 6px;
+
+  cursor: pointer;
+}
+
+#mypage-main-wrapper .board-box:hover {
+  background-color: #ebebeb;
+  color: rgb(226, 115, 75);
+  transition: 0.5s;
+}
+
+#mypage-main-wrapper .board-box>.board-image {
+  width: 150px;
+  height: 150px;
+
+  background-color: antiquewhite;
+}
+
+#mypage-main-wrapper .board-info-container {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+#mypage-main-wrapper .board-info-container>.title {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+#mypage-main-wrapper .board-info-container>.write-date {
+  font-size: 16px;
+  font-weight: 400;
+}
+
+#mypage-main-wrapper .board-box .sub-container {
+  display: flex;
+  gap: 20px;
+}
+
+#mypage-main-wrapper .board-box .sub-container>.sub-box {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+#mypage-main-wrapper .sub-box>.icon{
+  width: 30px;
+  height: 30px;
+
+  background-size: 100% 100%;
+}
+
+#mypage-main-wrapper .sub-box>.view-count {
+  background-image: url(src/assets/images/Eye.png);
+}
+
+#mypage-main-wrapper .sub-box>.good-count {
+  background-image: url(src/assets/images/good-icon-color.png);
+}
+
+#mypage-main-wrapper .sub-box>.comment-count {
+  background-image: url(src/assets/images/comment.png);
+}
+
+#mypage-main-wrapper .my-board-container .pagination-container {
+  display: flex;
+  justify-content: center;
+
+  margin-bottom: 20px;
+}
