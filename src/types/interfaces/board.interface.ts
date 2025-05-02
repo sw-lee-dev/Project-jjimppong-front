@@ -12,6 +12,22 @@ export default interface Board {
 
 }
 
+export default interface DetailBoard {
+    boardNumber: number;
+    boardContent: string;
+    boardTitle: string;
+    boardAddressCategory: string;
+    boardDetailCategory: string;
+    boardWriteDate: string;
+    boardScore: number;
+    boardViewCount: number;
+    boardAddress: string;
+    boardImage: string;
+    userId: string;
+    userNickname: string;
+    userLevel: number;
+}
+
 
 // response json형태와 필드명 동일하게!
 export default interface RecommandBoard {
@@ -37,7 +53,7 @@ export default interface FilteredBoard {
     boardScore : number;
     boardImage : string;
     userNickname : string;
-    userLevel : string;
+    userLevel : number;
     goodCount : number;
     commentCount : number;
 }

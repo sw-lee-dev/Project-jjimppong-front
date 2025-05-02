@@ -11,7 +11,7 @@ const useSignInUser = () => {
   const [cookies, _, removeCookie] = useCookies();
 
   // state: 로그인 유저 정보 상태 //
-  const { setUserId, setUserNickname, setName, setAddress, setDetailAddress, setGender, setProfileImage, resetSignInUser } = useSignInUserStore();
+  const { setUserId, setUserNickname, setUserLevel, setName, setAddress, setDetailAddress, setGender, setProfileImage, setJoinType, resetSignInUser } = useSignInUserStore();
 
   // function: get sign in user response 처리 함수 //
   const getSignInUserResponse = (responseBody: GetSignInUserResponseDto | ResponseDto | null) => {
@@ -28,14 +28,16 @@ const useSignInUser = () => {
       return;
     }
 
-    const { userId, userNickname, name, address, detailAddress, gender, profileImage } = responseBody as GetSignInUserResponseDto;
+    const { userId, userNickname, userLevel, name, address, detailAddress, gender, profileImage, joinType } = responseBody as GetSignInUserResponseDto;
     setUserId(userId);
     setUserNickname(userNickname);
+    setUserLevel(userLevel);
     setName(name);
     setAddress(address);
     setDetailAddress(detailAddress);
     setGender(gender);
     setProfileImage(profileImage);
+    setJoinType(joinType);
   };
 
   // function: 로그인 사용자 정보 불러오기 //

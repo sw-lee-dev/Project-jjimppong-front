@@ -8,7 +8,16 @@
 
 #top-bar.scrolled {
     background-color: rgb(225, 115, 75);
+}
+
+/* 스크롤 시 탑바의 Map 글씨색상은 하얗게 */
+#top-bar.scrolled .map-logo {
     color: white;
+}
+
+/* 스크롤 시 드롭다운의 마이페이지, 로그아웃 글씨색상은 유지되게 */
+#top-bar.scrolled .my-content {
+    color: var(--Lightnode-Grey);
 }
 
 #top-bar .map-logo{
@@ -49,15 +58,15 @@
 
 #top-bar .my-content {
     position: relative;
-  
+
     width: 32px;
     height: 32px;
-  
+
     background-image: url('/src/assets/images/user-profile.png');
     background-size: 100% 100%;
-  
+
     cursor: pointer;
-  }
+}
 
 #top-bar .my-content-list {
     position: absolute;
@@ -163,6 +172,7 @@
 } */
 
 #footer {
+    
     min-height: 100px;
     background-color: black;
     color: white;

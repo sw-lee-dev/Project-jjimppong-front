@@ -3,10 +3,13 @@ import {Outlet, useLocation, useNavigate} from 'react-router';
 import NavLogo from 'src/assets/images/small_logo.png'
 
 import './style.css';
-import { ACCESS_TOKEN, AUTH_ABSOLUTE_PATH, MAIN_ABSOLUTE_PATH, MAP_ABSOLUTE_PATH, MY_PAGE_ABSOLUTE_PATH } from 'src/constants';
+import { ACCESS_TOKEN, AUTH_ABSOLUTE_PATH, MAIN_ABSOLUTE_PATH, MAP_ABSOLUTE_PATH, MY_PAGE_ABSOLUTE_PATH, MY_PAGE_MAIN_ABSOLUTE_PATH, ROOT_PATH } from 'src/constants';
 import { useCookies } from 'react-cookie';
 import { useSignInUser } from 'src/hooks';
+
+import { useSignInUserStore } from 'src/stores';
 import { usePasswordReCheckStore } from 'src/stores';
+
 
 // component : 공통 레이아웃 컴포넌트 //
 export default function Layout() {
@@ -14,21 +17,22 @@ export default function Layout() {
     // state: 경로 상태 //
     const location = useLocation();
     // state: 로그인 사용자 비밀번호 재확인 상태 - 마이페이지로 이동시 //
-    const { resetVerify } = usePasswordReCheckStore();
+    const { isVerified, verify, resetVerify } = usePasswordReCheckStore();
+
+    const { joinType } = useSignInUserStore();
 
     // state: cookie 상태 //
-    const [cookies] = useCookies();
+    const [cookies, _, removeCookie] = useCookies();
 
     const navigator = useNavigate();
-
-    // state: 로그인 상태 //
-    const [login, setLogin] = useState<boolean>(true);
 
     // state: My Content 드롭다운 상태 //
     const [showMyContent, setShowMyContent] = useState<boolean>(false);
 
     // function: 로그인 유저 정보 불러오기 함수 //
     const getSignInUser = useSignInUser();
+
+    const { resetSignInUser } = useSignInUserStore();
 
     // event handler: 홈 클릭 이벤트 처리 //
     const onHomeClickHandler = () => {
@@ -47,12 +51,14 @@ export default function Layout() {
 
     // event handler: 마이페이지 클릭 이벤트 처리 //
     const onMyPageClickHandler = () => {
-        navigator(MY_PAGE_ABSOLUTE_PATH);
+        if (!isVerified) navigator(MY_PAGE_ABSOLUTE_PATH, {replace: true});
+        else navigator(MY_PAGE_MAIN_ABSOLUTE_PATH);
     }
 
     // event handler : 로그아웃 클릭 이벤트 처리 //
     const onSignOutClickHandler = () => {
-        setLogin(false);
+        removeCookie(ACCESS_TOKEN, { path: ROOT_PATH });
+        resetSignInUser();
     }
 
     // event handler : 로그인 이벤트 처리 //
@@ -68,8 +74,12 @@ export default function Layout() {
 
     // effect: 경로가 /my-page가 아닌 곳에서는 비밀번호 재확인 인증 리셋 실행할 함수 //
     useEffect(() => {
-        if (!location.pathname.startsWith('/my-page')) resetVerify();
-    }, [location.pathname, resetVerify]);
+        if (cookies[ACCESS_TOKEN] && joinType !== 'NORMAL') {
+            verify();
+        } else {
+            if (!location.pathname.startsWith('/my-page')) resetVerify();
+        }
+    }, [cookies, joinType, location.pathname, resetVerify]);
 
     // state: My Content List 요소 참조 //
     const myContentListRef = useRef<HTMLDivElement | null>(null);
@@ -160,7 +170,7 @@ export default function Layout() {
                     <div className='navigation-list'>
                         <img className='nav-logo' src={NavLogo} width='50px' onClick={onHomeClickHandler}/>
                         
-                                { login ? 
+                                { cookies[ACCESS_TOKEN] ? 
                                     <div className='nav-right-content'>
                                         <div className='map-logo' onClick={onMapClickHandler}>Map</div>
                                         <div className='my-content' onClick={onMyContentClickHandler}>

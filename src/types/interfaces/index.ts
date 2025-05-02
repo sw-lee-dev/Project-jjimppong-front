@@ -5,6 +5,7 @@ import Sigungu from './sigungu.interface';
 import AreaWithSigungu from './areawithsigungu.interface';
 import RecommandBoard from './board.interface';
 import FilteredBoard from './board.interface';
+import DetailBoard from './board.interface';
 
 import MyPageBoard from './mypage.board.interface';
 
@@ -16,5 +17,6 @@ export type{
     Board,
     Comment,
     MyPageBoard,
-    FilteredBoard
+    FilteredBoard,
+    DetailBoard
 }

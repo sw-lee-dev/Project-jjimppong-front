@@ -3,7 +3,7 @@ import { ResponseDto } from "..";
 export default interface GetBoardResponseDto extends ResponseDto {
   userId: string;
   userNickname: string;
-  userLevel: number | null;
+  userLevel: number;
   boardContent: string;
   boardTitle: string;
   boardAddressCategory: string;

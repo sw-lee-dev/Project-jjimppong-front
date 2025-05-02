@@ -8,13 +8,14 @@
 #user-update-container .update-image-box {
   display: flex;
   justify-content: center;
+
+  height: 170px;
 }
 
 #user-update-container .update-image-box>.update-image {
   box-sizing: border-box;
   border-radius: 75px;
   border: 1px solid black;
-  margin: 20px 0;
 
   width: 150px;
   height: 150px;
@@ -23,12 +24,18 @@
   background-position: 50% 50%;
 }
 
+#user-update-container .update-image-box .update-image-message {
+  margin-top: 150px;
+  text-align: center;
+  font-size: 13px;
+}
+
 #user-update-container .user-update-box {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 5px;
   
-  margin-bottom: 20px;
+  margin-bottom: 30px;
 }
 
 #user-update-container .user-update-box:hover {
@@ -38,7 +45,7 @@
 #user-update-container .user-update-box .user-update-row {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 5px;
 }
 
 #user-update-container .user-update-row>.title {
@@ -116,6 +123,11 @@
   cursor: pointer;
 }
 
+#user-update-container .user-update-row .update-area>.button:hover {
+  background-color: rgba(0, 100, 255, 0.8);
+  transition: 0.5s;
+}
+
 #user-update-container .user-update-row .update-area>.button.disable {
   background-color: grey;
 
@@ -125,11 +137,6 @@
 
 #user-update-container .user-update-row .update-area>.button.disable:hover {
   opacity: 1;
-}
-
-#user-update-container .user-update-row .update-area>.button:hover {
-  background-color: rgba(0, 100, 255, 0.8);
-  transition: 0.5s;
 }
 
 #user-update-container .user-update-row .message {
@@ -150,7 +157,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 20px;
+  gap: 45px;
+  
+  margin-bottom: 20px;
 }
 
 #user-update-container .update-button-box>.button {

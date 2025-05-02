@@ -12,14 +12,369 @@
 
 #wrapper-main .main-left{
     width: 20%;
-    z-index: 5;
-    background-color: aqua;
+    box-sizing: border-box;
+    background-color: rgb(226, 115, 75);
+    position: relative;
+    
+    height: 100vh;
+    margin: 0 auto;
+    overflow-y: hidden;
 }
+
+/* #wrapper-main .main-left::before{
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    border-left: 8px dashed #ccc;
+    transform: translateX(-50%);
+} */
+
+#wrapper-main .main-left .footstep {
+    z-index: 3;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    
+    width: 70px;
+    opacity: 0;
+
+    animation-duration: 4s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-fill-mode: none;
+}
+
+#wrapper-main .main-left .step1 { top: 100%; left: 30%; animation-name: step1Anim; }
+#wrapper-main .main-left .step2 { top: 80%; left: 70%; animation-name: step2Anim; }
+#wrapper-main .main-left .step3 { top: 60%; left: 30%; animation-name: step3Anim; }
+#wrapper-main .main-left .step4 { top: 40%; left: 70%; animation-name: step4Anim; }
+#wrapper-main .main-left .step5 { top: 20%; left: 30%; animation-name: step5Anim; }
+
+
+
+@keyframes step1Anim {
+    0%, 10% {
+        opacity: 0;
+        transform: translateX(-50%) scale(0.8);
+    }
+    2% {
+        opacity: 1;
+        transform: translateX(-50%) scale(1);
+    }
+    8% {
+        opacity: 1;
+        transform: translateX(-50%) scale(1);
+    }
+    10% {
+        opacity: 0;
+        transform: translateX(-50%) scale(0.8);
+    }
+}
+
+
+@keyframes step2Anim {
+    10%, 20% {
+        opacity: 0;
+        transform: translateX(-50%) scale(0.8);
+    }
+    12% {
+        opacity: 1;
+        transform: translateX(-50%) scale(1);
+    }
+    18% {
+        opacity: 1;
+        transform: translateX(-50%) scale(1);
+    }
+    20% {
+        opacity: 0;
+        transform: translateX(-50%) scale(0.8);
+    }
+}
+
+
+@keyframes step3Anim {
+    20%, 30% {
+        opacity: 0;
+        transform: translateX(-50%) scale(0.8);
+    }
+    22% {
+        opacity: 1;
+        transform: translateX(-50%) scale(1);
+    }
+    28% {
+        opacity: 1;
+        transform: translateX(-50%) scale(1);
+    }
+    30% {
+        opacity: 0;
+        transform: translateX(-50%) scale(0.8);
+    }
+}
+
+
+@keyframes step4Anim {
+    30%, 40% {
+        opacity: 0;
+        transform: translateX(-50%) scale(0.8);
+    }
+    32% {
+        opacity: 1;
+        transform: translateX(-50%) scale(1);
+    }
+    38% {
+        opacity: 1;
+        transform: translateX(-50%) scale(1);
+    }
+    40% {
+        opacity: 0;
+        transform: translateX(-50%) scale(0.8);
+    }
+}
+
+@keyframes step5Anim {
+    40%, 50% {
+        opacity: 0;
+        transform: translateX(-50%) scale(0.8);
+    }
+    42% {
+        opacity: 1;
+        transform: translateX(-50%) scale(1);
+    }
+    48% {
+        opacity: 1;
+        transform: translateX(-50%) scale(1);
+    }
+    50% {
+        opacity: 0;
+        transform: translateX(-50%) scale(0.8);
+    }
+}
+
+@keyframes step6Anim {
+    50%, 60% {
+        opacity: 0;
+        transform: translateX(-50%) scale(0.8);
+    }
+    52% {
+        opacity: 1;
+        transform: translateX(-50%) scale(1);
+    }
+    58% {
+        opacity: 1;
+        transform: translateX(-50%) scale(1);
+    }
+    60% {
+        opacity: 0;
+        transform: translateX(-50%) scale(0.8);
+    }
+}
+
+@keyframes step7Anim {
+    60%, 70% {
+        opacity: 0;
+        transform: translateX(-50%) scale(0.8);
+    }
+    62% {
+        opacity: 1;
+        transform: translateX(-50%) scale(1);
+    }
+    68% {
+        opacity: 1;
+        transform: translateX(-50%) scale(1);
+    }
+    70% {
+        opacity: 0;
+        transform: translateX(-50%) scale(0.8);
+    }
+}
+
+@keyframes step8Anim {
+    70%, 80% {
+        opacity: 0;
+        transform: translateX(-50%) scale(0.8);
+    }
+    72% {
+        opacity: 1;
+        transform: translateX(-50%) scale(1);
+    }
+    78% {
+        opacity: 1;
+        transform: translateX(-50%) scale(1);
+    }
+    80% {
+        opacity: 0;
+        transform: translateX(-50%) scale(0.8);
+    }
+}
+
+@keyframes step9Anim {
+    80%, 90% {
+        opacity: 0;
+        transform: translateX(-50%) scale(0.8);
+    }
+    82% {
+        opacity: 1;
+        transform: translateX(-50%) scale(1);
+    }
+    88% {
+        opacity: 1;
+        transform: translateX(-50%) scale(1);
+    }
+    90% {
+        opacity: 0;
+        transform: translateX(-50%) scale(0.8);
+    }
+}
+
+@keyframes step10Anim {
+    90%, 99.9% {
+        opacity: 0;
+        transform: translateX(-50%) scale(0.8);
+    }
+    92% {
+        opacity: 1;
+        transform: translateX(-50%) scale(1);
+    }
+    98% {
+        opacity: 1;
+        transform: translateX(-50%) scale(1);
+    }
+    99.9% {
+        opacity: 0;
+        transform: translateX(-50%) scale(0.8);
+    }
+}
+
 
 #wrapper-main .main-right{
     width: 20%;
-    z-index: 5;
-    background-color: aqua;
+    background-color: rgb(226, 115, 75);
+    box-sizing: border-box;
+
+    position: relative;
+    
+    height: 100vh;
+    margin: 0 auto;
+    overflow-y: hidden;
+}
+
+/* #wrapper-main .main-right::before{
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    border-left: 5px dashed #ccc;
+    transform: translateX(-50%);
+} */
+
+#wrapper-main .main-right .footstep {
+    z-index: 3;
+    position: absolute;
+    left: 50%;
+    
+
+    width: 70px;
+    opacity: 0;
+
+    animation-duration: 4s;
+    animation-delay: 4s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-fill-mode: none;
+}
+
+#wrapper-main .main-right .step1 { top: 20%; left: 30%; animation-name: step6Anim; }
+#wrapper-main .main-right .step2 { top: 40%; left: 70%; animation-name: step7Anim; }
+#wrapper-main .main-right .step3 { top: 60%; left: 30%; animation-name: step8Anim; }
+#wrapper-main .main-right .step4 { top: 80%; left: 70%; animation-name: step9Anim; }
+#wrapper-main .main-right .step5 { top: 100%; left: 30%; animation-name: step10Anim; }
+
+
+
+@keyframes step7Anim {
+    60%, 70% {
+        opacity: 0;
+        transform: translateX(-50%) scale(0.8);
+    }
+    62% {
+        opacity: 1;
+        transform: translateX(-50%) scale(1);
+    }
+    68% {
+        opacity: 1;
+        transform: translateX(-50%) scale(1);
+    }
+    70% {
+        opacity: 0;
+        transform: translateX(-50%) scale(0.8);
+    }
+}
+
+@keyframes step8Anim {
+    70%, 80% {
+        opacity: 0;
+        transform: translateX(-50%) scale(0.8);
+    }
+    72% {
+        opacity: 1;
+        transform: translateX(-50%) scale(1);
+    }
+    78% {
+        opacity: 1;
+        transform: translateX(-50%) scale(1);
+    }
+    80% {
+        opacity: 0;
+        transform: translateX(-50%) scale(0.8);
+    }
+}
+
+@keyframes step9Anim {
+    80%, 90% {
+        opacity: 0;
+        transform: translateX(-50%) scale(0.8);
+    }
+    82% {
+        opacity: 1;
+        transform: translateX(-50%) scale(1);
+    }
+    88% {
+        opacity: 1;
+        transform: translateX(-50%) scale(1);
+    }
+    90% {
+        opacity: 0;
+        transform: translateX(-50%) scale(0.8);
+    }
+}
+
+@keyframes step10Anim {
+    90%, 99.9% {
+        opacity: 0;
+        transform: translateX(-50%) scale(0.8);
+    }
+    92% {
+        opacity: 1;
+        transform: translateX(-50%) scale(1);
+    }
+    98% {
+        opacity: 1;
+        transform: translateX(-50%) scale(1);
+    }
+    99.9% {
+        opacity: 0;
+        transform: translateX(-50%) scale(0.8);
+    }
+}
+
+
+#wrapper-main .main-right{
+    width: 20%;
+    z-index: 3;
+    /* background-color: aqua; */
 }
 
 #wrapper-title{

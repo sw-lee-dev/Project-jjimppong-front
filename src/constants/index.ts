@@ -14,6 +14,7 @@ export const OTHERS_PATH = '*';
 // variable: 절대 path 상수 //
 export const ROOT_ABSOLUTE_PATH = ROOT_PATH;
 export const AUTH_ABSOLUTE_PATH = `${ROOT_PATH}${AUTH_PATH}`;
+export const SNS_SIGN_UP = `${AUTH_ABSOLUTE_PATH}/sns-sign-up`
 export const MAIN_ABSOLUTE_PATH = `${ROOT_PATH}${MAIN_PATH}`;
 export const MAP_ABSOLUTE_PATH = `${ROOT_PATH}${MAP_PATH}`;
 export const BOARD_ABSOLUTE_PATH = `${ROOT_PATH}${BOARD_PATH}`;
@@ -31,3 +32,5 @@ export const JOIN_TYPE = 'joinType';
 
 // variable: sns id 속성명 //
 export const SNS_ID = 'snsId';
+
+export const PRO_IMG = 'profileImage';

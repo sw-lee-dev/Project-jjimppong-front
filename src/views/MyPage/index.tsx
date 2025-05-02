@@ -5,7 +5,7 @@ import { createPortal } from 'react-dom';
 import Modal from 'src/components/Modal';
 import MyPageUserInfo from './UserInfo';
 import MyPageUserInfoUpdate from './UserInfoUpdate';
-import { getMyPageBoardRequest } from 'src/apis';
+import { getCommentRequest, getGoodRequest, getMyPageBoardRequest } from 'src/apis';
 import { ACCESS_TOKEN, BOARD_VIEW_ABSOLUTE_PATH, MAIN_ABSOLUTE_PATH, MY_PAGE_ABSOLUTE_PATH } from 'src/constants';
 import Pagination from 'src/components/Pagination';
 import { Comment, MyPageBoard } from 'src/types/interfaces';
@@ -60,6 +60,9 @@ interface TableItemProps {
 // component: 마이페이지 테이블 레코드 컴포넌트 //
 function TableItem({ myBoards }: TableItemProps) {
 
+  // state: cookie 상태 //
+  const [cookies] = useCookies();
+
   // state: my boards 정보 상태//
   const { boardNumber, boardImage, boardTitle, boardWriteDate, boardViewCount } = myBoards;
 
@@ -69,15 +72,19 @@ function TableItem({ myBoards }: TableItemProps) {
   // state: comment 리스트 상태 //
   const [comments, setComments] = useState<Comment[]>([]);
 
+  // variable: accessToken 상태 //
+  const accessToken = cookies[ACCESS_TOKEN];
+
   // function: 네비게이터 함수 //
   const navigator = useNavigate();
 
-  // function: get good response body 처리 함수 //
+  // function: get good response 처리 함수 //
   const getGoodResponse = (responseBody: GetGoodResponseDto | ResponseDto | null) => {
     const message = 
       !responseBody ? '서버에 문제가 있습니다.' :
       responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' : 
-      responseBody.code === 'NB' ? '존재하지 않는 게시글입니다.' : '';
+      responseBody.code === 'NB' ? '존재하지 않는 게시글입니다.' : 
+      responseBody.code === 'AF' ? '인증에 실패했습니다.' : '';
 
     const isSuccess = responseBody !== null && responseBody.code === 'SU';
     if (!isSuccess) {
@@ -89,12 +96,13 @@ function TableItem({ myBoards }: TableItemProps) {
     setGoods(goods);
   };
 
-  // function: get comment response body 처리 함수 //
+  // function: get comment response 처리 함수 //
   const getCommentResponse = (responseBody: GetCommentResponseDto | ResponseDto | null) => {
     const message = 
       !responseBody ? '서버에 문제가 있습니다.' : 
       responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' : 
-      responseBody.code === 'NB' ? '존재하지 않는 게시글입니다.' : '';
+      responseBody.code === 'NB' ? '존재하지 않는 게시글입니다.' : 
+      responseBody.code === 'AF' ? '인증에 실패했습니다.' : '';
 
     const isSuccess = responseBody !== null && responseBody.code === 'SU';
     if (!isSuccess) {
@@ -114,8 +122,8 @@ function TableItem({ myBoards }: TableItemProps) {
 
   // effect: 컴포넌트 로드 시 실행할 함수 //
   useEffect(() => {
-    // getGoodRequest(boardNumber).then(getGoodResponse);
-    // getCommentRequest(boardNumber).then(getCommentResponse); 
+    getGoodRequest(boardNumber).then(getGoodResponse);
+    getCommentRequest(boardNumber).then(getCommentResponse); 
   }, []);
 
   // render: 마이페이지 테이블 레코드 컴포넌트 렌더링 //

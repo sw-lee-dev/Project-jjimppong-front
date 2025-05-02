@@ -16,6 +16,7 @@ export default function AddressCategory({ onSelect }: Props) {
     const [gunguOpen, setGunguOpen] = useState(false);
 
     const areaCodeMap: Record<number, string> = {
+        0: "전체",
         1: "서울특별시",
         2: "인천광역시",
         3: "대전광역시",

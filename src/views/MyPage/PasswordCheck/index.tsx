@@ -1,14 +1,14 @@
 import React, { ChangeEvent, KeyboardEvent, useEffect, useRef, useState } from 'react';
-import Modal from 'src/components/Modal';
-import { useNavigate } from 'react-router';
-import { passwordReCheckRequest } from 'src/apis';
-import { ResponseDto } from 'src/apis/dto/response';
-import { PasswordReCheckRequestDto } from 'src/apis/dto/request/mypage';
-import { ACCESS_TOKEN, MAIN_ABSOLUTE_PATH, MY_PAGE_MAIN_ABSOLUTE_PATH } from 'src/constants';
 import { useCookies } from 'react-cookie';
+import { useNavigate } from 'react-router';
+import Modal from 'src/components/Modal';
+import { passwordReCheckRequest } from 'src/apis';
+import { PasswordReCheckRequestDto } from 'src/apis/dto/request/mypage';
+import { ResponseDto } from 'src/apis/dto/response';
+import { usePasswordReCheckStore } from 'src/stores';
+import { ACCESS_TOKEN, MAIN_ABSOLUTE_PATH, MY_PAGE_MAIN_ABSOLUTE_PATH } from 'src/constants';
 
 import './style.css';
-import { usePasswordReCheckStore } from 'src/stores';
 
 // interface: 로그인 사용자 비밀번호 일치여부 컴포넌트 속성 //
 interface PasswordReCheckProps {

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router';
-import { getRecommandBoardRequest } from 'src/apis';
+import { getRecommandBoardRequest, putViewCount } from 'src/apis';
 import { ResponseDto } from 'src/apis/dto/response';
 import GetRecommandBoardResponseDto from 'src/apis/dto/response/board/get-recommand-board.response.dto';
 import Pagination from 'src/components/Pagination';
@@ -26,7 +26,12 @@ function CardItem({boards} : CardItemProps){
 
   const onclick = () => {
     navigator(BOARD_VIEW_ABSOLUTE_PATH(boardNumber));
+    putViewCount(boardNumber);
   }
+
+  // useEffect(()=>{
+  //   console.log('좋아요 수 :', goodCount);
+  // },[])
 
 
 
@@ -39,7 +44,7 @@ function CardItem({boards} : CardItemProps){
         <div className='card-title'>{boardTitle}</div>
         <div className='card-good'>
           <img className='good-image' src={GoodIconColor} />
-          <div className='good-length'>{goodCount !== null ? goodCount : '0'}</div>
+          <div className='good-length'>{goodCount}</div>
         </div>
       </div>
       <div className='card-third-wrap'>

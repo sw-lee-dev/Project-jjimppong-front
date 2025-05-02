@@ -1,4 +1,4 @@
-import React, { useEffect, useState, ChangeEvent } from 'react';
+import React, { useEffect, useState, ChangeEvent, useCallback } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 
@@ -40,18 +40,18 @@ export default function BoardUpdate() {
   const [areaModalOpen, setAreaModalOpen] = useState(false);
   const [categorySelected, setCategorySelected] = useState('');
 
-  const getBoardResponseHandler = (response: GetBoardResponseDto | ResponseDto | null) => {
+  const getBoardResponseHandler = useCallback((response: GetBoardResponseDto | ResponseDto | null) => {
     if (!response || response.code !== 'SU') {
       alert('존재하지 않는 게시글입니다.');
       navigate(BOARD_ABSOLUTE_PATH);
       return;
     }
-
+  
     const {
       boardTitle, boardContent, boardAddressCategory, boardDetailCategory,
       boardAddress, boardImage, boardWriteDate, boardScore, boardViewCount
     } = response as GetBoardResponseDto;
-
+  
     setForm({
       boardNumber: Number(boardNumber),
       boardTitle,
@@ -64,14 +64,15 @@ export default function BoardUpdate() {
       boardScore,
       boardImage: boardImage ?? '',
     });
-
+  
     setCategorySelected(boardDetailCategory);
-  };
+  }, [navigate, boardNumber]); // 의존성 배열에 navigate와 boardNumber 넣어주기
 
   useEffect(() => {
-    if (!accessToken || !boardNumber) return;
-    getBoardRequest(Number(boardNumber), accessToken).then(getBoardResponseHandler);
-  }, [boardNumber, accessToken]);
+    if (!boardNumber) return;
+    getBoardRequest(Number(boardNumber))
+      .then(getBoardResponseHandler);
+  }, [boardNumber, getBoardResponseHandler]);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -104,7 +105,7 @@ export default function BoardUpdate() {
       boardImage: uploadedImageUrl,
     };
   
-    patchBoardRequest(requestBody, accessToken)
+    patchBoardRequest(Number(boardNumber), requestBody, accessToken)
       .then((res) => {
         if (res && res.code === 'SU') {
           alert('게시글이 수정되었습니다.');
@@ -209,6 +210,6 @@ export default function BoardUpdate() {
           onSelect={handleRegionSelect}
         />
       )}
-    </div>
+    </div>  
   );
   }

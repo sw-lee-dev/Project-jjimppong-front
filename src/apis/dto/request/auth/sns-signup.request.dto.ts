@@ -1,7 +1,5 @@
-export default interface SignUpRequestDto { 
-    userId: string;
+export default interface SnsSignUpRequestDto { 
     userNickname: string;
-    userPassword?: string;
     name: string;
     userEmail: string;
     authNumber: string;
@@ -10,6 +8,6 @@ export default interface SignUpRequestDto {
     gender: string;
     userLevel: string;
     profileImage?: string;
-    joinType: 'NORMAL';
-    snsId?: string
+    joinType: 'KAKAO' | 'NAVER';
+    snsId: string;
 }

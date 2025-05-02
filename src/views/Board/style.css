@@ -144,6 +144,7 @@
     margin-top: 20px;
     width: 800px;
     max-width: max-content;
+    z-index: 1;
 }
 
 .category-tabs button{

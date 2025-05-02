@@ -56,5 +56,6 @@
 }
 
 #modal-wrapper .modal-body {
-  max-height: 800px;
+  max-height: calc(100vh - 200px);
+  overflow-y: auto;
 }

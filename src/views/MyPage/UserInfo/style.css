@@ -14,7 +14,6 @@
   box-sizing: border-box;
   border-radius: 75px;
   border: 1px solid black;
-  margin: 20px 0;
 
   width: 150px;
   height: 150px;
@@ -38,7 +37,7 @@
 #user-info-container .user-info-box .user-info-row {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 5px;
 }
 
 #user-info-container .user-info-row>.title {
@@ -61,8 +60,7 @@
   justify-content: center;
   align-items: center;
 
-  box-sizing: border-box;
-  padding: 10px 0;
+  margin-bottom: 20px;
 }
 
 #user-info-container>.exit-button-box .exit-button {

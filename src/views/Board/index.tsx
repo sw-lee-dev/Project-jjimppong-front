@@ -1,17 +1,18 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router';
-import { BOARD_VIEW_ABSOLUTE_PATH, BOARD_WRITE_PATH } from 'src/constants';
+import { ACCESS_TOKEN, BOARD_VIEW_ABSOLUTE_PATH, BOARD_WRITE_PATH } from 'src/constants';
 import { usePagination } from 'src/hooks';
 import { FilteredBoard } from 'src/types/interfaces';
 import { Region } from 'src/types/interfaces';
 import './style.css';
 import GetFilteredBoardResponseDto from 'src/apis/dto/response/board/get-filtered-board.response';
 import { ResponseDto } from 'src/apis/dto/response';
-import { getGoodCountFilterdBoardRequest, getViewCountFilterdBoardRequest, getWriteDateFilterdBoardRequest } from 'src/apis';
+import { getGoodCountFilterdBoardRequest, getViewCountFilterdBoardRequest, getWriteDateFilterdBoardRequest, putBoardScore, putViewCount } from 'src/apis';
 import Pagination from 'src/components/Pagination';
 import { useSearchParams } from 'react-router-dom';
 import regionData from 'src/assets/data/regionCodes.json'
 import AddressCategory from 'src/components/AddressCategory';
+import { useCookies } from 'react-cookie';
 
 
 
@@ -40,6 +41,8 @@ function BoardItem({boards}:BoardItemProps){
 
   const onclick = () => {
       navigator(BOARD_VIEW_ABSOLUTE_PATH(boardNumber));
+      putViewCount(boardNumber);
+      putBoardScore(boardNumber);
   }
   return (
     <div>
@@ -84,8 +87,7 @@ export default function BoardMain() {
   const [searchParams] = useSearchParams();
   const navigator = useNavigate();
 
-  // 로그인 상태 //
-  const [isLogin, setIsLogin] = useState(true);
+  const [cookies] = useCookies();
   
   const menuList = ['최신 순', '조회수 순', '좋아요 순'];
   const categoryList = ['맛집', '축제', '팝업 스토어', '교통'];
@@ -123,6 +125,7 @@ export default function BoardMain() {
   };
 
   const areaCodeMap: Record<number, string> = {
+    0: "전체",
     1: "서울특별시",
     2: "인천광역시",
     3: "대전광역시",
@@ -150,7 +153,10 @@ export default function BoardMain() {
 
   // 작성하기 버튼, 로그인이 안되어있으면 로그인을 해달라는 창 꺼내기 //
   const hadleGoWritePage = () => {
-    if(!isLogin) return;
+    if(!cookies[ACCESS_TOKEN]) {
+      alert('로그인이 필요한 서비스입니다.');
+      return;
+    }
     navigator(BOARD_WRITE_PATH);
   }
 
@@ -215,7 +221,7 @@ export default function BoardMain() {
     <div id='filterd-board-list-wrapper'>
       <div className='address-category-container'>
         <AddressCategory onSelect={(a1, a2) => {
-          console.log('Selected address:', a1, a2);
+          //console.log('Selected address:', a1, a2);
           setA1(a1);
           setA2(a2);
         }}/>

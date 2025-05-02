@@ -6,6 +6,7 @@ import NicknameCheckRequestDto from "./nickname-check.request.dto";
 import PasswordResetRequestDto from "./password-reset.request.dto";
 import SignInRequestDto from "./sign-in.request.dto";
 import SignUpRequestDto from "./sign-up.request.dto";
+import SnsSignUpRequestDto from "./sns-signup.request.dto";
 
 export type {
     EmailAuthRequestDto,
@@ -15,5 +16,6 @@ export type {
     NicknameCheckRequestDto,
     PasswordResetRequestDto,
     SignInRequestDto,
-    SignUpRequestDto
+    SignUpRequestDto,
+    SnsSignUpRequestDto
 }

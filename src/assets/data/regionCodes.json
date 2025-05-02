@@ -1,5 +1,6 @@
 [
-  { "regionName": "강남구",  "areaCode": 1, "sigunguCode": 1 },
+  { "regionName": "전체", "areaCode" : 0, "sigunguCode" : 0},
+  { "regionName": "강남구", "areaCode": 1, "sigunguCode": 1 },
   { "regionName": "강동구", "areaCode": 1, "sigunguCode": 2 },
   { "regionName": "강북구", "areaCode": 1, "sigunguCode": 3 },
   { "regionName": "강서구", "areaCode": 1, "sigunguCode": 4 },
