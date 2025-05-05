@@ -1,46 +1,104 @@
-# Getting Started with Create React App
+## 🔴 프로젝트 개요
+### Jjimppong Front
+코리아아이티아카데미 부산  
+**[산대특] 빅데이터 활용 실버케어테크 인지치료소프트웨어 개발 과정**  
+Front-end 프로젝트  
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## 🔵 데모
+### 미리보기
+캡쳐 혹은 영상 등이 위치
+### 링크
+배포 링크가 위치
 
-## Available Scripts
+## 🟢 주요 기능
+- 회원가입, 로그인
+- 카카오, 네이버 로그인
+- 마이페이지
+- 사용자 점수로 회원 등급 표시
+- 게시글 작성, 수정, 삭제, 보기
+- 게시글 조회수, 찜, 싫어요, 댓글 작성, 댓글 삭제
+- 네이버 지도 API를 활용한 지역 정보 및 길찾기 기능
 
-In the project directory, you can run:
+## 🟡 기술 스택
+- React.js
+- TypeScript
+- React Router
+- React Cookie
+- Zustand
+- Axios
+- React Daum Postcode
 
-### `npm start`
+## 🟣 프로젝트 실행 방법
+### 클론 및 폴더 이동
+```bash
+git clone 깃주소
+cd 프로젝트명
+```
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### 패키지 설치
+```bash
+npm install 
+```
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+### 개발 서버 실행
+```bash
+npm run start
+```
 
-### `npm test`
+### 빌드 방법
+```bash
+npm run build
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## 📂 폴더 구조
+```md
+📂 memories-front
+├ 📂 src
+│ ├ 📂 apis
+│ │ └ 📂 dto
+│ ├ 📂 assets
+│ │ ├ 📂 data
+│ │ ├ 📂 fonts
+│ │ └ 📂 images
+│ ├ 📂 components
+│ │ ├ 📂 AddressCategory
+│ │ ├ 📂 DetailCategory
+│ │ ├ 📂 InputBox
+│ │ ├ 📂 Modal
+│ │ ├ 📂 Pagination
+│ │ └ 📂 RegionSelectModal
+│ ├ 📂 constants
+│ ├ 📂 hooks
+│ ├ 📂 layouts
+│ │ └ 📂 Layout
+│ ├ 📂 map
+│ ├ 📂 stores
+│ ├ 📂 types
+│ │ ├ 📂 aliases
+│ │ └ 📂 interfaces
+│ ├ 📂 utils
+│ └ 📂 views
+│   ├ 📂 Auth
+│   │ ├ 📂 IdSearch
+│   │ ├ 📂 PasswordReset
+│   │ ├ 📂 SignIn
+│   │ ├ 📂 SignUp
+│   │ └ 📂 SnsSignUp
+│   ├ 📂 Board
+│   │ ├ 📂 Detail
+│   │ ├ 📂 Recommand
+│   │ ├ 📂 Update
+│   │ └ 📂 Write
+│   ├ 📂 Main
+│   │ └ 📂 MainTitle
+│   └ 📂 MyPage
+│     ├ 📂 PasswordCheck
+│     ├ 📂 UserInfo
+│     └ 📂 UserInfoUpdate
+├ 📂 public
+├ 📄 package.json
+└ 📄 tsconfig.json
+```
 
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+## 📑 라이센스
+### Copyright (c) <2025.04> <A team>
