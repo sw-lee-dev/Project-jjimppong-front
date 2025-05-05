@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router';
-import { getRecommandBoardRequest, putViewCount } from 'src/apis';
+import { getRecommandBoardRequest, putBoardScore, putViewCount } from 'src/apis';
 import { ResponseDto } from 'src/apis/dto/response';
 import GetRecommandBoardResponseDto from 'src/apis/dto/response/board/get-recommand-board.response.dto';
 import Pagination from 'src/components/Pagination';
@@ -27,6 +27,7 @@ function CardItem({boards} : CardItemProps){
   const onclick = () => {
     navigator(BOARD_VIEW_ABSOLUTE_PATH(boardNumber));
     putViewCount(boardNumber);
+    putBoardScore(boardNumber);
   }
 
   // useEffect(()=>{
