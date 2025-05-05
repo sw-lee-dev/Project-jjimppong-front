@@ -52,7 +52,7 @@ npm run build
 
 ## 📂 폴더 구조
 ```md
-📂 memories-front
+📂 PROJECT-FRONT
 ├ 📂 src
 │ ├ 📂 apis
 │ │ └ 📂 dto
