@@ -27,14 +27,17 @@ export default function Auth() {
   };
 
   // effect: 화면 렌더시 실행할 함수 //
-  if (
-    !cookies[ACCESS_TOKEN] && // 로그인 안 된 경우만
-    page === 'sign-in' &&
-    cookies[JOIN_TYPE] &&
-    cookies[SNS_ID]
-  ) {
-    setPage('sns-sign-up');
-  }
+  useEffect(() => {
+    // 로그인되지 않았고, sns-id와 join-type이 쿠키에 있을 경우 sns-sign-up 페이지로 이동
+    if (
+      !cookies[ACCESS_TOKEN] &&
+      page === 'sign-in' &&
+      cookies[JOIN_TYPE] &&
+      cookies[SNS_ID]
+    ) {
+      setPage('sns-sign-up');
+    }
+  }, [cookies, page]); // 쿠키나 페이지 상태가 변경될 때마다 실행
 
   return (
     <div id='auth-wrapper'>

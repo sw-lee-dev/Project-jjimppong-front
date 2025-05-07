@@ -13,7 +13,7 @@ interface UserInfoProps {
 export default function MyPageUserInfo({onModalViewChange}: UserInfoProps) {
 
   // state: 로그인 유저 정보 상태 //
-  const { userId, userNickname, name, gender, address, detailAddress, profileImage } = useSignInUserStore();
+  const { userId, userNickname, name, gender, address, detailAddress, profileImage, joinType } = useSignInUserStore();
 
   // variable: 프로필 이미지 스타일 //
   const profileImageStyle = { backgroundImage: `url(${profileImage ? profileImage : DefaultProfile})` };
@@ -32,7 +32,7 @@ export default function MyPageUserInfo({onModalViewChange}: UserInfoProps) {
       <div className='user-info-box'>
         <div className='user-info-row'>
           <div className='title'>아이디</div>
-          <div className='content'>{userId}</div>
+          <div className='content'>{joinType === 'NORMAL' ? userId : 'SNS 유저'}</div>
         </div>
         <div className='user-info-row'>
           <div className='title'>닉네임</div>

@@ -42,6 +42,9 @@
 }
 
 #board-detail-wrapper .post-content {
+  border-top: solid 1px gray;
+  border-bottom: solid 1px gray;
+  min-height: 100vh;
   margin: 20px 0;
   font-size: 16px;
 }
@@ -204,4 +207,37 @@
 
 .comment-content{
   padding: 8px;
+}
+
+.button-group {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin: 20px 0;
+}
+
+.edit-button {
+  background-color: #d4f4dd;
+  color: black;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.delete-button {
+  background-color: #ff4d4f;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.edit-button:hover {
+  background-color: #a3e4b5;
+}
+
+.delete-button:hover {
+  background-color: #e60000;
 }

@@ -60,9 +60,6 @@ interface TableItemProps {
 // component: 마이페이지 테이블 레코드 컴포넌트 //
 function TableItem({ myBoards }: TableItemProps) {
 
-  // state: cookie 상태 //
-  const [cookies] = useCookies();
-
   // state: my boards 정보 상태//
   const { boardNumber, boardImage, boardTitle, boardWriteDate, boardViewCount } = myBoards;
 
@@ -72,8 +69,8 @@ function TableItem({ myBoards }: TableItemProps) {
   // state: comment 리스트 상태 //
   const [comments, setComments] = useState<Comment[]>([]);
 
-  // variable: accessToken 상태 //
-  const accessToken = cookies[ACCESS_TOKEN];
+  // variable: boardImage 스타일 //
+  const boardImageStyle = { backgroundImage: `url(${boardImage})` };
 
   // function: 네비게이터 함수 //
   const navigator = useNavigate();
@@ -130,7 +127,7 @@ function TableItem({ myBoards }: TableItemProps) {
   return (
     <div>
       <div className='board-box' onClick={onClick}>
-        <div className='board-image'>{boardImage}</div>
+        <div className='board-image' style={boardImageStyle}></div>
         <div className='board-info-container'>
           <div className='title'>{boardTitle}</div>
           <div className='write-date'>{boardWriteDate}</div>

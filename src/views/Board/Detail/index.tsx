@@ -1,8 +1,10 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import './style.css';
 
-import { ACCESS_TOKEN, BOARD_ABSOLUTE_PATH, BOARD_VIEW_ABSOLUTE_PATH } from 'src/constants';
-import { deleteCommentRequest, getBoardRequest, getCommentRequest, postCommentRequest, getGoodRequest, getHateRequest, putGoodRequest, putHateRequest } from 'src/apis';
+
+import { deleteCommentRequest, getBoardRequest, getCommentRequest, postCommentRequest, getGoodRequest, getHateRequest, putGoodRequest, putHateRequest, deleteBoardRequest } from 'src/apis';
+import { ACCESS_TOKEN, BOARD_ABSOLUTE_PATH, BOARD_VIEW_ABSOLUTE_PATH, MAP_ABSOLUTE_PATH } from 'src/constants';
+
 import { useCookies } from 'react-cookie';
 import { useNavigate, useParams } from 'react-router';
 import { GetBoardResponseDto, GetCommentResponseDto, GetGoodResponseDto } from 'src/apis/dto/response/board';
@@ -11,6 +13,9 @@ import { Comment } from 'src/types/interfaces';
 import { useSignInUserStore } from 'src/stores';
 import { PostCommentRequestDto } from 'src/apis/dto/request/board';
 import GetHateResponseDto from 'src/apis/dto/response/board/get-hate.response.dto';
+import regionData from 'src/map/regionCodes.json';
+
+
 
 interface CommentItemProps {
   comments : Comment;
@@ -26,7 +31,7 @@ function CommentItem({comments, onCommentDeleted}:CommentItemProps){
   const [cookies] = useCookies();
   const accessToken = cookies[ACCESS_TOKEN];
   const { userId } = useSignInUserStore();
-
+  
   const onDeleteCommentClickHandler = (commentNumber : number) => {
     if(!accessToken) return;
     deleteCommentRequest(commentNumber, accessToken, Number(boardNumber)).then(deleteCommentResponse)
@@ -119,7 +124,37 @@ export default function BoardDetail() {
   
   // function: 네비게이터 함수 //
   const navigate = useNavigate();
+
+  const areaCodeMap: Record<number, string> = {
+    0: "전체",
+    1: "서울특별시",
+    2: "인천광역시",
+    3: "대전광역시",
+    4: "대구광역시",
+    5: "광주광역시",
+    6: "부산광역시",
+    7: "울산광역시",
+    8: "세종특별자치시",
+    31: "경기도",
+    32: "강원도",
+    33: "충청북도",
+    34: "충청남도",
+    35: "경상북도",
+    36: "경상남도",
+    37: "전라북도",
+    38: "전라남도",
+    39: "제주특별자치도",
+};
+
   
+  // state: 작성자 ID 저장용
+  const [writerId, setWriterId] = useState('');
+
+  // 게시글 작성자인지 여부
+  const isWriter = writerId === userId;
+
+  // ---------------- getBoardResponse 함수 내부 ----------------
+
   // function: get board response 처리 함수 //
   const getBoardResponse = (responseBody: GetBoardResponseDto | ResponseDto | null) => {
     const message = 
@@ -127,19 +162,22 @@ export default function BoardDetail() {
       responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' :
       responseBody.code === 'AF' ? '인증에 실패했습니다.' :
       responseBody.code === 'NB' ? '게시글이 존재하지 않습니다.' : '';
-
+  
     const isSuccess = responseBody !== null && responseBody.code === 'SU';
     if (!isSuccess) {
       alert(message);
       navigate(BOARD_ABSOLUTE_PATH);
       return;
     }
-
+  
     const {
+      userId: boardWriterId,
       boardTitle, boardContent, boardAddressCategory, boardDetailCategory, boardAddress,
-      userNickname, userLevel, boardWriteDate, boardViewCount, boardImage
+      userNickname, userLevel, boardWriteDate, boardViewCount, boardImage, textFileUrl
     } = responseBody as GetBoardResponseDto;
-
+  
+    // set 상태로 작성자 ID 저장
+    setWriterId(boardWriterId);
     setBoardTitle(boardTitle);
     setBoardContent(boardContent);
     setBoardAddressCategory(boardAddressCategory);
@@ -151,6 +189,7 @@ export default function BoardDetail() {
     setBoardViewCount(boardViewCount);
     setBoardImage(boardImage);
   };
+
 
     // function: get comment response 처리 함수 //
     const getCommentResponse = (responseBody: GetCommentResponseDto | ResponseDto | null) => {
@@ -307,6 +346,29 @@ export default function BoardDetail() {
     putHateRequest(boardNumber, accessToken).then(putHateResponse);
   };
 
+
+  const getRegionKeyByName = (areaCode:number, region : string) => {
+    const selectedRegion = regionData.find(r => r.regionName === region && r.areaCode === areaCode);
+    if (!selectedRegion) return null;
+    return {
+      areaCode: selectedRegion.areaCode,
+      sigunguCode: selectedRegion.sigunguCode,
+      ADM_SECT_C : selectedRegion.ADM_SECT_C
+    };
+  }
+
+    const handleSearch = async () => {
+      // 문자열 값으로부터 코드 번호 (key)를 역으로 찾기
+      // Object.entries() : 객체의 key-value 쌍을 배열 형태로 반환하는 메서드. 값으로부터 key를 찾을 때 유용하게 사용
+      // Object.entries(obj)
+      // obj: key-value로 구성된 객체
+      // 반환값: [[key1, value1], [key2, value2], ...] 형태의 배열
+      const [region1, region2] = boardAddressCategory.split(" ");
+      const areaCode = Number(Object.entries(areaCodeMap).find(([key, value]) => value === region1)?.[0]);
+      const address = getRegionKeyByName(areaCode, region2)?.ADM_SECT_C ?? '';
+      navigate(`${MAP_ABSOLUTE_PATH}?addressCategory=${address}`);
+    };
+
   // effect: 컴포넌트 로드 시 실행할 함수 //
   useEffect(() => {
     if (!boardNumber) {
@@ -319,6 +381,27 @@ export default function BoardDetail() {
     getHateRequest(boardNumber).then(getHateResponse);
   }, []);
 
+  // 게시글 수정
+  const onEditClickHandler = () => {
+    navigate(`/board/${boardNumber}/update`);
+  };
+
+  // 게시글 삭제
+  const onDeleteClickHandler = async () => {
+    if (!boardNumber || !accessToken) return;
+  
+    const confirmDelete = window.confirm('정말로 이 게시글을 삭제하시겠습니까?');
+    if (!confirmDelete) return;
+  
+    const response = await deleteBoardRequest(boardNumber, accessToken);
+    if (!response || response.code !== 'SU') {
+      alert('게시글 삭제에 실패했습니다.');
+      return;
+    }
+  
+    alert('게시글이 삭제되었습니다.');
+    navigate(BOARD_ABSOLUTE_PATH);
+  };
 
   return (
     <div id="board-detail-wrapper">
@@ -335,7 +418,7 @@ export default function BoardDetail() {
           <div className="right">
             <span className="badge">{userLevel}</span>
             <span className="nickname">{userNickname}</span>
-            <button className="location-btn">위치</button>
+            <button className="location-btn" onClick={handleSearch}>위치</button>
           </div>
         </div>
 
@@ -365,6 +448,13 @@ export default function BoardDetail() {
             </div>
           </div>
         </div>
+
+        {isWriter && (
+          <div className="button-group">
+            <button className="edit-button" onClick={onEditClickHandler}>수정</button>
+            <button className="delete-button" onClick={onDeleteClickHandler}>삭제하기</button>
+          </div>
+        )}
 
         <div className="comment-input-section">
           <div className='comment-input'>

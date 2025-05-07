@@ -5,7 +5,7 @@
 
   margin: 0 auto;
   padding-top: 60px;
-  min-width: 800px;
+  min-width: 1200px;
 }
 
 #mypage-main-wrapper .user-container {
@@ -181,11 +181,15 @@
 #mypage-main-wrapper .my-board-container {
   display: flex;
   flex-direction: column;
+
+  margin: auto;
+  width: 1200px;
+
   gap: 12px;
 }
 
 #mypage-main-wrapper .my-board-title {
-  padding: 0 100px;
+  padding: 0 110px;
 
   font-size: 30px;
   font-weight: 800;
@@ -234,7 +238,10 @@
   width: 150px;
   height: 150px;
 
-  background-color: antiquewhite;
+  /* background-color: antiquewhite; */
+  /* 게시글 사진 칸에 맞추기 */
+  background-position: 50% 50%;
+  background-size: 100% 100%;
 }
 
 #mypage-main-wrapper .board-info-container {
@@ -287,6 +294,10 @@
 
 #mypage-main-wrapper .sub-box>.comment-count {
   background-image: url(src/assets/images/comment.png);
+}
+
+#mypage-main-wrapper .my-board-container{
+  min-height: 100vh;
 }
 
 #mypage-main-wrapper .my-board-container .pagination-container {

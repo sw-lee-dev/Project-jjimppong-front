@@ -1,9 +1,9 @@
 import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import { Address, useDaumPostcodePopup } from 'react-daum-postcode';
-import { fileUploadRequest, patchSignInUserRequest, updateNicknameCheckRequest } from 'src/apis';
+import { fileUploadRequest, patchSignInUserRequest, patchSNSSignInUserRequest, updateNicknameCheckRequest } from 'src/apis';
 import { ResponseDto } from 'src/apis/dto/response';
-import { PatchSignInUserRequestDto, PostNicknameCheckRequestDto } from 'src/apis/dto/request/mypage';
+import { PatchSignInUserRequestDto, PatchSNSSignInUserRequestDto, PostNicknameCheckRequestDto } from 'src/apis/dto/request/mypage';
 import { ACCESS_TOKEN } from 'src/constants';
 import { useSignInUserStore } from 'src/stores';
 import DefaultProfile from 'src/assets/images/default-profile.png';
@@ -113,6 +113,26 @@ export default function MyPageUserInfoUpdate({onModalViewChange}: UserInfoUpdate
     onModalViewChange();
   };
 
+  // function: patch sns sign in user response 처리 함수 //
+  const patchSNSSignInUserResponse = (responseBody: ResponseDto | null) => {
+    const message =
+      !responseBody ? '서버에 문제가 있습니다.' :
+      responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' :
+      responseBody.code === 'AF' ? '인증에 실패했습니다.' : 
+      responseBody.code === 'EU' ? '이미 사용중인 닉네임입니다.' : 
+      HttpStatusCode.BadRequest ? '닉네임 중복 확인해주세요.' : '';
+
+    const isSuccess = responseBody !== null && responseBody.code === 'SU';
+    if (!isSuccess) {
+      alert(message);
+      return;
+    }
+
+    alert('수정이 완료되었습니다.');
+    getSignInUser();
+    onModalViewChange();
+  };
+
   // event handler: 프로필 사진 클릭 이벤트 처리 //
   const onProfileClickHandler = () => {
     if (!fileRef.current) return;
@@ -181,15 +201,20 @@ export default function MyPageUserInfoUpdate({onModalViewChange}: UserInfoUpdate
   const onUpdateClickHandler = async () => {
     const message = 
       !updateNickname ? '닉네임을 입력하세요.' :
-      !updatePassword ? '비밀번호를 입력하세요.' :
-      !updatePasswordCheck ? '비밀번호 확인을 입력하세요.' :
+      joinType === 'NORMAL' && !updatePassword ? '비밀번호를 입력하세요.' :
+      joinType === 'NORMAL' && !updatePasswordCheck ? '비밀번호 확인을 입력하세요.' :
+      !isUpdatePasswordChecked ? '비밀번호는 영문, 숫자를 혼용하여 8 ~ 13자 입력해주세요.' :
+      !isUpdatePasswordEquals ? '비밀번호 확인의 일치여부를 확인해주세요.' :
       !updateAddress ? '주소를 입력하세요.' : '';
     
     if (!isUpdateNicknameChecked) {
       setUpdateNicknameMessage('닉네임 중복 확인해주세요');
     }
 
-    const isCheck = updateNickname && updatePassword && updatePasswordCheck && updateAddress && isUpdatePasswordChecked && isUpdatePasswordEquals;
+    const isCheck = 
+    joinType === 'NORMAL' ? 
+    updateNickname && updatePassword && updatePasswordCheck && updateAddress && isUpdatePasswordChecked && isUpdatePasswordEquals
+    : updateNickname && updateAddress;
     if (!isCheck) {
       alert(message);
       return;
@@ -204,16 +229,30 @@ export default function MyPageUserInfoUpdate({onModalViewChange}: UserInfoUpdate
 
     newProfileImage = profileImage === previewProfile ? profileImage : newProfileImage;
 
-    const requestBody: PatchSignInUserRequestDto = {
-      userNickname: updateNickname,
-      userPassword: updatePassword,
-      address: updateAddress,
-      detailAddress: updateDetailAddress,
-      profileImage: newProfileImage
-    };
+    if (joinType === 'NORMAL') {
+      const requestBody: PatchSignInUserRequestDto = {
+        userNickname: updateNickname,
+        userPassword: updatePassword,
+        address: updateAddress,
+        detailAddress: updateDetailAddress,
+        profileImage: newProfileImage
+      };
 
-    patchSignInUserRequest(requestBody, accessToken).then(patchSignInUserResponse);
+      patchSignInUserRequest(requestBody, accessToken).then(patchSignInUserResponse);
+      
+    /* sns 사용자의 정보 수정 메서드 - sns 로그인 하면 password 값이 null 이기 때문에 password 입력 안함 */
+    } else {
+      const requestBody: PatchSNSSignInUserRequestDto = {
+        userNickname: updateNickname,
+        address: updateAddress,
+        detailAddress: updateDetailAddress,
+        profileImage: newProfileImage
+      };
+
+      patchSNSSignInUserRequest(requestBody, accessToken).then(patchSNSSignInUserResponse);
+    }
   };
+
   // event handler: 취소 버튼 클릭 이벤트 처리 //
   const onExitClickHandler = () => {
     onModalViewChange();
@@ -247,7 +286,7 @@ export default function MyPageUserInfoUpdate({onModalViewChange}: UserInfoUpdate
       <div className='user-update-box'>
         <div className='user-update-row'>
           <div className='title'>아이디</div>
-          <div className='content'>{userId}</div>
+          <div className='content'>{joinType === 'NORMAL' ? userId : 'SNS 유저'}</div>
         </div>
         <div className='user-update-row'>
           <div className='title'>닉네임</div>

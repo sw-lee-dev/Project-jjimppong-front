@@ -399,6 +399,17 @@ export default function SnsSignUp(props: Props) {
       console.log('요청 데이터:', requestBody);
     });
   }
+  
+    // event handler: sns 회원가입 취소 버튼 클릭 이벤트 처리 //
+    const onSnsSignUpCancelClickHandler = () => {
+      // 쿠키 삭제
+      removeCookie(JOIN_TYPE, { path: '/' });
+      removeCookie(SNS_ID, { path: '/' });
+  
+      // 페이지 새로고침
+      window.location.reload();
+    };
+  
  
 
   // render: sns 회원가입 컴포넌트 렌더링 //
@@ -428,7 +439,7 @@ export default function SnsSignUp(props: Props) {
       </div>
       <div className='button-container'>
         <div className={signUpButtonClass} onClick={onSnsSignUpClickHandler}>SNS 회원가입</div>
-        <div className='link' onClick={() => onPageChange('sign-in')}>로그인</div>
+        <div className='link' onClick={onSnsSignUpCancelClickHandler}>취소</div>
       </div>
     </div>
     ) 

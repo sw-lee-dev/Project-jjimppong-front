@@ -12,11 +12,9 @@ import './style.css';
 import RegionSelectModal from 'src/components/RegionSelectModal';
 import ImageIcon from 'src/assets/images/image.png';
 import PaperclipIcon from 'src/assets/images/Paperclip.png';
-import TypeIcon from 'src/assets/images/Type.png';
-import VideoIcon from 'src/assets/images/Video.png';
 import { ResponseDto } from 'src/apis/dto/response';
 
-const categories = ['카테고리 1', '카테고리 2', '카테고리 3', '카테고리 4', '카테고리 5'];
+const categories = ['맛집', '축제', '팝업스토어', '교통', '시설'];
 
 export default function BoardUpdate() {
   const { boardNumber } = useParams();
@@ -125,8 +123,7 @@ export default function BoardUpdate() {
   const handleRegionSelect = (region1: string, region2: string) => {
     setForm((prev) => ({
       ...prev,
-      boardAddressCategory: region1,
-      boardAddress: region2
+      boardAddressCategory: `${region1} ${region2}`
     }));
   };
 
@@ -179,20 +176,26 @@ export default function BoardUpdate() {
       <input name="boardTitle" value={form.boardTitle} onChange={handleChange} />
   
       <div className="editor-tools">
-        <img src={ImageIcon} alt="이미지 추가" className="editor-icon" />
-        <input type="file" accept="image/*" onChange={handleImageChange} hidden id="image-upload" />
-          <label htmlFor="image-upload" className="image-upload-label">
-            이미지 업로드
-          </label>
+        <label htmlFor="image-upload" className="editor-icon-label">
+          <img src={ImageIcon} alt="이미지 추가" className="editor-icon" />
+        </label>
+        <input
+          type="file"
+          accept="image/*"
+          onChange={handleImageChange}
+          hidden
+          id="image-upload"
+        />
 
-          {previewUrl && (
-            <div className="image-preview-wrapper">
-              <img src={previewUrl} alt="미리보기" className="image-preview" />
-            </div>
-          )}
-        <img src={PaperclipIcon} alt="파일 첨부" className="editor-icon" />
-        <img src={TypeIcon} alt="텍스트 서식" className="editor-icon" />
-        <img src={VideoIcon} alt="동영상 추가" className="editor-icon" />
+        {previewUrl && (
+          <div className="image-preview-wrapper">
+            <img src={previewUrl} alt="미리보기" className="image-preview" />
+          </div>
+        )}
+
+        <label className="editor-icon-label">
+          <img src={PaperclipIcon} alt="파일 첨부" className="editor-icon" />
+        </label>
       </div>
   
       <div className="input-label">내용을 입력해주세요.</div>

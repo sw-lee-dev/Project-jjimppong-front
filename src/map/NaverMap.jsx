@@ -2,14 +2,17 @@
 import { useEffect, useState } from "react";
 import regionCodes from "./regionCodes.json";
 import "./NaverMap.css";
+import { useNavigate } from "react-router";
+import { BOARD_ABSOLUTE_PATH } from "src/constants";
 
 function NaverMap() {
+  const navigate = useNavigate();
   const [selectedRegion, setSelectedRegion] = useState(null);
   const [regionData, setRegionData] = useState(null);
-  const [showCheck, setShowCheck] = useState(false);
 
-  const token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJxd2VyMTIzNCIsImlhdCI6MTc0NTg4NDY2MSwiZXhwIjoxNzQ1OTE3MDYxfQ.HW4Z3P3ZTzaNHcL9Cl9Sn1RLvs_Vz71n8_i2K7JKfQc';
-  localStorage.setItem('authToken', token);
+  const handlerCheckButtonClick = (areaCode, sigunguCode) => {
+    navigate(`${BOARD_ABSOLUTE_PATH}?addressCategory1=${areaCode}&addressCategory2=${sigunguCode}&detailCategory=`);
+  }
 
   const formatDate = (dateStr) => {
     if (!dateStr || dateStr.length !== 8) return dateStr;
@@ -22,19 +25,24 @@ function NaverMap() {
         .replace(/시|군|구/g, "")
         .trim();
 
-  const fetchFestivals = async (areaCode, sigunguCode) => {
-    try {
-      const res = await fetch(`http://localhost:4000/api/festivals?areaCode=${areaCode}&sigunguCode=${sigunguCode}`, {
-        headers: { 'Authorization': `Bearer ${token}` },
-      });
-      if (!res.ok) throw new Error("축제 데이터 가져오기 실패");
-      const data = await res.json();
-      return Array.isArray(data) ? data : [];
-    } catch (err) {
-      console.error(err);
-      return [];
-    }
-  };
+  // const token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJxd2VyMTIzNCIsImlhdCI6MTc0NjU3OTczMiwiZXhwIjoxNzQ2NjEyMTMyfQ.Q10bADrJkEVrNkX98ivrjK7bnrDmgdgVaxmfa1zhibY';
+  // localStorage.setItem('authToken', token);
+
+        const fetchFestivals = async (areaCode, sigunguCode) => {
+          try {
+            const res = await fetch(`http://localhost:4000/api/festivals?areaCode=${areaCode}&sigunguCode=${sigunguCode}`
+            //   , {
+            //   headers: { 'Authorization': `Bearer ${token}` },
+            // }
+          );
+            if (!res.ok) throw new Error("축제 데이터 가져오기 실패");
+            const data = await res.json();
+            return Array.isArray(data) ? data : [];
+          } catch (err) {
+            console.error(err);
+            return [];
+          }
+        };
 
   const fetchPopups = async (admSectCode) => {
     const res = await fetch(`http://localhost:4000/popup-stores?region=${admSectCode}`);
@@ -74,6 +82,7 @@ function NaverMap() {
     );
 
     setRegionData({ festivals: filteredFestivals, popups, restaurants });
+    return region;
   };
 
 
@@ -144,10 +153,35 @@ function NaverMap() {
 
           naver.maps.Event.addListener(polygon, "mouseout", () => {
             polygon.setOptions({ fillColor: "#b4e2d5", fillOpacity: 0.4 });
-            regionLabel.close();
+            //regionLabel.close();
           });
 
-          naver.maps.Event.addListener(polygon, "click", () => handlePolygonClick(feature));
+          naver.maps.Event.addListener(polygon, "click", () => {
+            handlePolygonClick(feature).then((region) => {
+
+              const bounds = polygon.getBounds();
+              const center = bounds.getCenter();
+              regionLabel.setContent(
+                `<div style="
+                  background: rgba(51,51,51, 0.85);
+                  color: #fff;
+                  padding: 4px 10px;
+                  border-radius: 6px;
+                  font-size: 14px
+                  ">${feature.properties.SGG_NM}</div>
+                  <button id="navigate-button">버튼</button>`
+              );
+              regionLabel.setPosition(center);
+              regionLabel.open(map);
+              
+              setTimeout(() => {
+                const btn = document.getElementById("navigate-button");
+                if (btn && region) {
+                  btn.onclick = () => handlerCheckButtonClick(region.areaCode, region.sigunguCode);
+                }
+              }, 0);
+            });
+          });
         });
       });
   }, []);
@@ -160,12 +194,9 @@ function NaverMap() {
         {selectedRegion && regionData ? (
           <>
             <div className="card">
-              <button className="toggle-header" onClick={() => setShowCheck(!showCheck)}>
-                📍 Check! 여기 가봤어? <span>{showCheck ? "▲" : "▼"}</span>
+              <button className="action-button" onClick={handlerCheckButtonClick}>
+                📍 Check! 여기 가봤어?
               </button>
-              {showCheck && (
-                <button className="action-button">게시글 보러가기</button>
-              )}
             </div>
 
             <div className="card">

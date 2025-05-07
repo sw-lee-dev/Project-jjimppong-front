@@ -11,7 +11,7 @@ import PaperclipIcon from 'src/assets/images/Paperclip.png';
 
 import RegionSelectModal from 'src/components/RegionSelectModal';
 
-const categories = ['맛 집', '축 제', '팝업 스토어', '교 통', '시 설'];
+const categories = ['맛집', '축제', '팝업 스토어', '교통', '시설'];
 
 const BoardWrite = () => {
   const [cookies] = useCookies();
@@ -51,8 +51,7 @@ const BoardWrite = () => {
     setDistrictSelected(region2);
     setForm((prev) => ({
       ...prev,
-      boardAddressCategory: region1,
-      boardAddress: region2,
+      boardAddressCategory: `${region1} ${region2}`
     }));
   };
 

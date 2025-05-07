@@ -2,7 +2,7 @@
 .board-update-container {
   width: 700px;
   margin: 0 auto;
-  padding: 32px 0;
+  padding: 120px 40px 40px 40px;
   display: flex;
   flex-direction: column;
   gap: 24px;
@@ -78,17 +78,40 @@ textarea[name="boardContent"] {
   resize: vertical;
 }
 
-/* 에디터 아이콘 툴바 */
+/* 에디터 툴바 (이미지 업로드 등) */
 .editor-tools {
   display: flex;
-  gap: 16px;
-  margin: 12px 0;
+  align-items: center;
+  gap: 12px;
 }
 
+/* 에디터 아이콘 */
 .editor-icon {
   width: 20px;
   height: 20px;
   cursor: pointer;
+}
+
+/* 이미지 업로드 라벨 */
+.image-upload-label {
+  padding: 6px 12px;
+  background-color: #f5f5f5;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+/* 이미지 미리보기 */
+.image-preview-wrapper {
+  margin-top: 12px;
+}
+
+.image-preview {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  border: 1px solid #ddd;
 }
 
 /* 버튼 그룹 */
@@ -99,7 +122,6 @@ textarea[name="boardContent"] {
   margin-top: 20px;
 }
 
-/* 버튼 공통 스타일 */
 .cancel-button,
 .delete-button,
 .submit-button {
@@ -111,42 +133,17 @@ textarea[name="boardContent"] {
   border: none;
 }
 
-/* 취소 버튼 */
 .cancel-button {
   background-color: #e0e0e0;
   color: #333;
 }
 
-/* 삭제 버튼 */
 .delete-button {
-  background-color: #e53935;
-  color: white;
+  background-color: #d32f2f;
+  color: #fff;
 }
 
-/* 수정 완료 버튼 */
 .submit-button {
-  background-color: #4caf50;
-  color: white;
-}
-
-.image-upload-label {
-  display: inline-block;
-  margin-top: 10px;
-  padding: 6px 12px;
   background-color: #1976d2;
-  color: white;
-  font-size: 14px;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.image-preview-wrapper {
-  margin-top: 10px;
-}
-
-.image-preview {
-  width: 200px;
-  height: auto;
-  border-radius: 8px;
-  border: 1px solid #ccc;
+  color: #fff;
 }

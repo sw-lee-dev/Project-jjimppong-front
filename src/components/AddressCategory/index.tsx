@@ -1,6 +1,6 @@
 import React from 'react'
 import { useState, useEffect } from 'react';
-import regionData from 'src/assets/data/regionCodes.json'
+import regionData from 'src/assets/data/regionCodes.json';
 import { Region } from 'src/types/interfaces';
 import './style.css';
 

@@ -10,7 +10,7 @@ import { ResponseDto } from 'src/apis/dto/response';
 import { getGoodCountFilterdBoardRequest, getViewCountFilterdBoardRequest, getWriteDateFilterdBoardRequest, putBoardScore, putViewCount } from 'src/apis';
 import Pagination from 'src/components/Pagination';
 import { useSearchParams } from 'react-router-dom';
-import regionData from 'src/assets/data/regionCodes.json'
+import regionData from 'src/map/regionCodes.json'
 import AddressCategory from 'src/components/AddressCategory';
 import { useCookies } from 'react-cookie';
 
