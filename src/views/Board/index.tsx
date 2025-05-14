@@ -3,8 +3,6 @@ import { useNavigate } from 'react-router';
 import { ACCESS_TOKEN, BOARD_VIEW_ABSOLUTE_PATH, BOARD_WRITE_PATH } from 'src/constants';
 import { usePagination } from 'src/hooks';
 import { FilteredBoard } from 'src/types/interfaces';
-import { Region } from 'src/types/interfaces';
-import './style.css';
 import GetFilteredBoardResponseDto from 'src/apis/dto/response/board/get-filtered-board.response';
 import { ResponseDto } from 'src/apis/dto/response';
 import { getGoodCountFilterdBoardRequest, getViewCountFilterdBoardRequest, getWriteDateFilterdBoardRequest, putBoardScore, putViewCount } from 'src/apis';
@@ -14,7 +12,7 @@ import regionData from 'src/map/regionCodes.json'
 import AddressCategory from 'src/components/AddressCategory';
 import { useCookies } from 'react-cookie';
 
-
+import './style.css';
 
 interface BoardItemProps {
   boards : FilteredBoard;
@@ -29,13 +27,15 @@ function BoardItem({boards}:BoardItemProps){
           boardDetailCategory, 
           boardTitle, 
           boardViewCount,
-          boardScore,
           boardImage,
           userNickname,
           userLevel,
           goodCount,
           commentCount
         } = boards;
+
+  // variable: 프로필 이미지 스타일 //
+  const boardImageStyle = { backgroundImage: `url(${boardImage ?  boardImage : ''})` };
 
   const navigator = useNavigate();
 
@@ -48,7 +48,7 @@ function BoardItem({boards}:BoardItemProps){
     <div>
       <div className='board-body' onClick={onclick}>
       <div className='board-image-container'>
-        <div className='board-image'></div>
+        <div className='board-image' style={boardImageStyle}></div>
       </div>
       <div className='board-information-container'>
         <div className='board-title'>{boardTitle}</div>
@@ -75,7 +75,6 @@ function BoardItem({boards}:BoardItemProps){
   )
 }
 
-
 export default function BoardMain() {
   const [sortMenuOpen, setSortMenuOpen] = useState(false);
   const [selectedMenu, setSelectedMenu] = useState<string | null>('');
@@ -96,7 +95,6 @@ export default function BoardMain() {
   const addressCategory2 = searchParams.get('addressCategory2');
   const detailCategory = searchParams.get('detailCategory');
   
-
   // state: 페이지네이션 상태 //
   const { 
     currentPage, setCurrentPage, currentSection, setCurrentSection,
@@ -150,7 +148,6 @@ export default function BoardMain() {
     setSortMenuOpen(false);
   }
 
-
   // 작성하기 버튼, 로그인이 안되어있으면 로그인을 해달라는 창 꺼내기 //
   const hadleGoWritePage = () => {
     if(!cookies[ACCESS_TOKEN]) {
@@ -166,10 +163,6 @@ export default function BoardMain() {
     setSelectedCategory(detailCategory);
     setA1(Number(addressCategory1));
     setA2(Number(addressCategory2));
-    //console.log(addressCategory1);
-    //console.log(addressCategory2);
-    //console.log(detailCategory);
-
   }, []);
 
   useEffect(()=>{
@@ -206,47 +199,41 @@ export default function BoardMain() {
         const fullAddress = `${areaName} ${sigunguName}`;
         addressMatch = item.boardAddressCategory === fullAddress;
       }
-
       return categoryMatch && addressMatch;
       });
-        
-    //console.log(selectedCategory);
-  
+
     setTotalList(filtered);
     setIsEmpty(filtered.length === 0);
   }, [selectedCategory, originalList, a1, a2]);
-  
 
   return (
     <div id='filterd-board-list-wrapper'>
       <div className='address-category-container'>
         <AddressCategory onSelect={(a1, a2) => {
-          //console.log('Selected address:', a1, a2);
           setA1(a1);
           setA2(a2);
         }}/>
       </div>
       <div className="category-tabs">
-            <button
-              className={`tab ${selectedCategory === null ? 'active' : ''}`}
-              onClick={() => setSelectedCategory(null)}
-            >
-              전체
-            </button>
-            {categoryList.map((category) => (
-              <button
-                key={category}
-                className={`tab ${selectedCategory === category ? 'active' : ''}`}
-                onClick={() => setSelectedCategory(category)}
-              >
-                {category}
-              </button>
-            ))}
+        <button
+          className={`tab ${selectedCategory === null ? 'active' : ''}`}
+          onClick={() => setSelectedCategory(null)}
+        >
+        전체
+        </button>
+        {categoryList.map((category) => (
+          <button
+            key={category}
+            className={`tab ${selectedCategory === category ? 'active' : ''}`}
+            onClick={() => setSelectedCategory(category)}
+          >
+          {category}
+          </button>
+        ))}
       </div>
       <div className='filterd-board-title'>
         게시물
       </div>
-      
       <div className='filterd-board-list-container'>
         <div className='board-write-btn' onClick={hadleGoWritePage}>
           작성하기
@@ -255,28 +242,22 @@ export default function BoardMain() {
           <div className='sort-toggle' onClick={()=>setSortMenuOpen(!sortMenuOpen)}>
             {selectedMenu !== '' ? selectedMenu : '최신 순'}
           </div>
-          {
-              sortMenuOpen && (
-                <ul className='sort-dropdown-list'>
-                  {
-                    menuList.map((menu)=>(
-                      <li key={menu} onClick={()=>{handleChangeMenu(menu)}}>
-                        {menu}
-                      </li>
-                    ))
-                  }
-                </ul>
-              )
+          {sortMenuOpen && (
+            <ul className='sort-dropdown-list'>
+              {menuList.map((menu)=>(
+                <li key={menu} onClick={()=>{handleChangeMenu(menu)}}>
+                {menu}
+                </li>
+                ))
+              }
+            </ul>
+            )
           }
-
         </div>
-        
         <div className='filtered-board-list'>
-          {
-            !isEmpty ? (
-              viewList.map((boards, index) => <BoardItem key={index} boards={boards} />)
-              
-            ) : <p>해당 카테고리에 게시글이 없습니다.</p>
+          {!isEmpty ? 
+          (viewList.map((boards, index) => <BoardItem key={index} boards={boards} />))
+          : <p>해당 카테고리에 게시글이 없습니다.</p>
           }
         </div>
         <div className='pagination-container'>

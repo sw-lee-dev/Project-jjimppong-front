@@ -1,12 +1,11 @@
 import { ChangeEvent, useMemo, useState } from 'react';
-import './style.css';
-import { AuthPage } from '../../../types/aliases';
-import InputBox from '../../../components/InputBox';
-import { EmailAuthCheckRequestDto, EmailAuthRequestDto, IdSearchRequestDto, PasswordResetRequestDto } from '../../../apis/dto/request/auth';
-import { EmailAuthCheckRequest, EmailAuthRequest } from '../../../apis';
-import { ResponseDto } from '../../../apis/dto/response';
+import { AuthPage } from 'src/types/aliases';
+import InputBox from 'src/components/InputBox';
+import { EmailAuthCheckRequestDto, PasswordResetRequestDto } from 'src/apis/dto/request/auth';
+import { ResponseDto } from 'src/apis/dto/response';
 import axios from 'axios';
 
+import './style.css';
 
 // interface: 비밀번호 찾기 컴포넌트 속성 //
 interface Props {
@@ -17,11 +16,12 @@ export default function PasswordReset(props: Props) {
 
   const { onPageChange } = props;
 
-  // Axios 인스턴스 생성
-  const api = axios.create({
-    baseURL: 'http://127.0.0.1:4000', // 기본 URL을 4000 포트로 설정
-    timeout: 1000, // 기본 타임아웃 설정 (필요시)
-  });
+  // variable: URL 상수 //
+  const API_DOMAIN = process.env.REACT_APP_API_DOMAIN;
+  const AUTH_MODULE_URL = `${API_DOMAIN}/api/v1/auth`;
+  const PASSWORD_RESET_URL = `${AUTH_MODULE_URL}/password-reset`;
+  const EMAIL_AUTH_ID_URL = `${AUTH_MODULE_URL}/email-auth-id`;
+  const EMAIL_AUTH_CHECK_URL = `${AUTH_MODULE_URL}/email-auth-check`;
 
   // state: 사용자 아이디 상태 //
   const [userId, setUserId] = useState<string>('');
@@ -52,7 +52,6 @@ export default function PasswordReset(props: Props) {
   const [isUserEmailChecked, setUserEmailChecked] = useState<boolean>(false);
   // state: 사용자 인증번호 확인 상태 //
   const [isAuthNumberChecked, setAuthNumberChecked] = useState<boolean>(false);
-
 
   // variable: 이메일 중복 확인 버튼 활성화 //
   const isUserEmailCheckButtonActive = userEmail !== '';
@@ -101,27 +100,6 @@ export default function PasswordReset(props: Props) {
     setAuthNumberChecked(isSuccess);
   };
 
-  // function: id search response 처리 함수 //
-  const passwordResetResponse = (responseBody: ResponseDto | null) => {
-    const message = 
-      !responseBody ? '서버에 문제가 있습니다' :
-      responseBody.code === 'DBE' ? '서버에 문제가 있습니다' :
-      responseBody.code === 'AF' ? '이메일 인증에 실패하였습니다 ' :
-      responseBody.code === 'VF' ? '모두 입력해주세요' : '';
-    
-    const isSuccess = responseBody !== null && responseBody.code === 'SU';
-    if (!isSuccess) {
-      if (responseBody && responseBody.code === 'EU') {
-        setUserIdMessage(message); 
-        return;
-      }
-      alert(message);
-      return;
-    }
-
-    onPageChange('main');
-  };
-
   // event handler: 사용자 아이디 변경 이벤트 처리 //
   const onUserIdChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
     let { value } = event.target;
@@ -153,7 +131,6 @@ export default function PasswordReset(props: Props) {
     setUserEmailMessage(message);
     setUserEmailChecked(isMatch);
     setUserEmailMessageError(!isMatch);
-
   };
 
   // event handler: 사용자 인증번호 변경 이벤트 처리 //
@@ -172,7 +149,7 @@ export default function PasswordReset(props: Props) {
   
     const requestBody = { userEmail };
   
-    axios.post('http://127.0.0.1:4000/api/v1/auth/email-auth-id', requestBody)
+    axios.post(EMAIL_AUTH_ID_URL, requestBody)
       .then(response => {
         if (response.data.code) {
           alert('인증번호를 전송했습니다.');
@@ -193,7 +170,6 @@ export default function PasswordReset(props: Props) {
       });
   };
 
-
   // 이메일, 인증번호 인증 확인 함수 //
   const onCheckAuthNumberClickHandler = () => {
     if (!isAuthNumberCheckButtonActive) return;
@@ -203,7 +179,7 @@ export default function PasswordReset(props: Props) {
       authNumber: authNumber.trim()
     };
   
-    axios.post('http://127.0.0.1:4000/api/v1/auth/email-auth-check', requestBody)
+    axios.post(EMAIL_AUTH_CHECK_URL, requestBody)
       .then(response => {
         emailAuthCheckResponse(response.data);
       })
@@ -215,7 +191,7 @@ export default function PasswordReset(props: Props) {
 
   // event handler: 비밀번호 찾기 버튼 클릭 이벤트 처리 //
   const onPasswordResetClickHandler = () => {
-    if (!userId) setUserIdMessage('이름을 입력해주세요');
+    if (!userId) setUserIdMessage('아이디를 입력해주세요');
     if (!isUserEmailChecked) {
       setUserEmailMessage('인증번호를 전송해주세요');
       setUserEmailMessageError(true);
@@ -233,7 +209,7 @@ export default function PasswordReset(props: Props) {
     // 로딩 시작
     setIsLoadingPasswordReset(true);
   
-    axios.post('http://127.0.0.1:4000/api/v1/auth/password-reset', requestBody)
+    axios.post(PASSWORD_RESET_URL, requestBody)
       .then((response) => {
         console.log('임시비밀번호를 이메일로 전송했습니다.');
         if (response.data.code === 'SU') {

@@ -1,14 +1,11 @@
 import { ChangeEvent, useMemo, useState } from 'react';
-import './style.css';
-import { AuthPage } from '../../../types/aliases';
-import InputBox from '../../../components/InputBox';
-import { EmailAuthCheckRequestDto, EmailAuthRequestDto, IdSearchRequestDto } from '../../../apis/dto/request/auth';
-import { EmailAuthCheckRequest, EmailAuthRequest } from '../../../apis';
-import { ResponseDto } from '../../../apis/dto/response';
-import { useCookies } from 'react-cookie';
+import { AuthPage } from 'src/types/aliases';
+import InputBox from 'src/components/InputBox';
+import { EmailAuthCheckRequestDto, IdSearchRequestDto } from 'src/apis/dto/request/auth';
+import { ResponseDto } from 'src/apis/dto/response';
 import axios from 'axios';
-import { IdSearchResponseDto } from 'src/apis/dto/response/auth';
 
+import './style.css';
 
 // interface: 아이디 찾기 컴포넌트 속성 //
 interface Props {
@@ -19,11 +16,12 @@ export default function IdSearch(props: Props) {
 
   const { onPageChange } = props;
 
-  // Axios 인스턴스 생성
-  const api = axios.create({
-    baseURL: 'http://127.0.0.1:4000', // 기본 URL을 4000 포트로 설정
-    timeout: 1000, // 기본 타임아웃 설정 (필요시)
-  });
+  // variable: URL 상수 //
+  const API_DOMAIN = process.env.REACT_APP_API_DOMAIN;
+  const AUTH_MODULE_URL = `${API_DOMAIN}/api/v1/auth`;
+  const ID_SEARCH_URL = `${AUTH_MODULE_URL}/id-search`;
+  const EMAIL_AUTH_ID_URL = `${AUTH_MODULE_URL}/email-auth-id`;
+  const EMAIL_AUTH_CHECK_URL = `${AUTH_MODULE_URL}/email-auth-check`;
 
   // state: 사용자 이름 상태 //
   const [userName, setUserName] = useState<string>('');
@@ -98,30 +96,9 @@ export default function IdSearch(props: Props) {
     setAuthNumberMessageError(!isSuccess);
     setAuthNumberChecked(isSuccess);
   };
-
-  // function: id search response 처리 함수 //
-  const idSearchResponse = (responseBody: ResponseDto | null) => {
-    const message = 
-      !responseBody ? '서버에 문제가 있습니다' :
-      responseBody.code === 'DBE' ? '서버에 문제가 있습니다' :
-      responseBody.code === 'AF' ? '이메일 인증에 실패하였습니다 ' :
-      responseBody.code === 'VF' ? '모두 입력해주세요' : '';
-    
-    const isSuccess = responseBody !== null && responseBody.code === 'SU';
-    if (!isSuccess) {
-      if (responseBody && responseBody.code === 'EU') {
-        setUserNameMessage(message);
-        return;
-      }
-      alert(message);
-      return;
-    }
-
-    onPageChange('main');
-  };
-
-    // onChange에서는 필터링 없이 그대로 저장
-    const onUserNameChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
+  
+  // onChange에서는 필터링 없이 그대로 저장
+  const onUserNameChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
     setUserName(value);
   
@@ -165,7 +142,7 @@ export default function IdSearch(props: Props) {
   
     const requestBody = { userEmail };
   
-    axios.post('http://127.0.0.1:4000/api/v1/auth/email-auth-id', requestBody)
+    axios.post(EMAIL_AUTH_ID_URL, requestBody)
       .then(response => {
         if (response.data.code) {
           alert('인증번호를 전송했습니다.');
@@ -195,7 +172,7 @@ export default function IdSearch(props: Props) {
       authNumber: authNumber.trim()
     };
   
-    axios.post('http://127.0.0.1:4000/api/v1/auth/email-auth-check', requestBody)
+    axios.post(EMAIL_AUTH_CHECK_URL, requestBody)
       .then(response => {
         emailAuthCheckResponse(response.data);
       })
@@ -222,21 +199,36 @@ export default function IdSearch(props: Props) {
       name: userName, userEmail, authNumber
     };
 
-    axios.post('http://127.0.0.1:4000/api/v1/auth/id-search', requestBody)
+    axios.post(ID_SEARCH_URL, requestBody)
     .then((response) => {
       console.log('아이디 찾기 응답:', response.data);
-      if (response.data.code === 'SU') {
-        alert(`아이디: ${response.data.userId}`);
+      
+      const { code, userId, message } = response.data;
+  
+      if (code === 'SU') {
+        alert(`아이디: ${userId}`);
         onPageChange('sign-in');
+  
+      } else if (code === 'SNF') {
+        // SNS 사용자 (SNS Not Found)
+        alert('SNS 사용자는 아이디 찾기를 지원하지 않습니다.');
+        onPageChange('sign-in');
+  
+      } else if (code === 'NEU') {
+        // Not Exist User
+        alert('해당 이름과 이메일로 가입된 사용자가 없습니다.');
+        onPageChange('sign-in');
+  
       } else {
-        alert(`아이디 찾기 실패: ${response.data.message}`);
+        // 기타 예외
+        alert(`아이디 찾기 실패: ${message}`);
       }
     })
     .catch(error => {
-        alert('인증번호 확인에 실패했습니다. 다시 시도해주세요.');
-        console.error("회원가입 중 오류 발생:", error.response ? error.response.data : error);
-      });
-  };
+      alert('서버 요청 중 오류가 발생했습니다. 다시 시도해주세요.');
+      console.error("아이디 찾기 중 오류 발생:", error.response ? error.response.data : error);
+    });
+  }
 
   // render: 아이디 찾기 컴포넌트 렌더링 //
   return (

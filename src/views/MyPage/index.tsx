@@ -121,7 +121,7 @@ function TableItem({ myBoards }: TableItemProps) {
   useEffect(() => {
     getGoodRequest(boardNumber).then(getGoodResponse);
     getCommentRequest(boardNumber).then(getCommentResponse); 
-  }, []);
+  }, [boardNumber]);
 
   // render: 마이페이지 테이블 레코드 컴포넌트 렌더링 //
   return (
@@ -231,7 +231,7 @@ export default function MyPageMain() {
   // effect: cookie의 accessToken과 경로가 변경될 시 실행할 함수 //
   useEffect(() => {
     if (!accessToken) navigator(MAIN_ABSOLUTE_PATH);
-  }, [accessToken, pathname]);
+  }, [accessToken, navigator, pathname]);
 
   // effect: 비밀번호 재확인 인증이 없을 시 실행할 함수 //
   useEffect(() => {

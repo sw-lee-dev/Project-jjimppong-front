@@ -1,18 +1,16 @@
 import React, { useEffect, useState, ChangeEvent, useCallback } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
-
 import { fileUploadRequest, getBoardRequest, patchBoardRequest, deleteBoardRequest } from 'src/apis';
 import { GetBoardResponseDto } from 'src/apis/dto/response/board';
 import { PatchBoardRequestDto } from 'src/apis/dto/request/board';
 import { ACCESS_TOKEN, BOARD_ABSOLUTE_PATH, BOARD_VIEW_ABSOLUTE_PATH } from 'src/constants';
-
-import './style.css';
-
 import RegionSelectModal from 'src/components/RegionSelectModal';
 import ImageIcon from 'src/assets/images/image.png';
 import PaperclipIcon from 'src/assets/images/Paperclip.png';
 import { ResponseDto } from 'src/apis/dto/response';
+
+import './style.css';
 
 const categories = ['맛집', '축제', '팝업스토어', '교통', '시설'];
 

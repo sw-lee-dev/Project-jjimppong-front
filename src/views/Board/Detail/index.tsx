@@ -1,10 +1,6 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
-import './style.css';
-
-
 import { deleteCommentRequest, getBoardRequest, getCommentRequest, postCommentRequest, getGoodRequest, getHateRequest, putGoodRequest, putHateRequest, deleteBoardRequest } from 'src/apis';
-import { ACCESS_TOKEN, BOARD_ABSOLUTE_PATH, BOARD_VIEW_ABSOLUTE_PATH, MAP_ABSOLUTE_PATH } from 'src/constants';
-
+import { ACCESS_TOKEN, BOARD_ABSOLUTE_PATH, MAP_ABSOLUTE_PATH } from 'src/constants';
 import { useCookies } from 'react-cookie';
 import { useNavigate, useParams } from 'react-router';
 import { GetBoardResponseDto, GetCommentResponseDto, GetGoodResponseDto } from 'src/apis/dto/response/board';
@@ -15,6 +11,7 @@ import { PostCommentRequestDto } from 'src/apis/dto/request/board';
 import GetHateResponseDto from 'src/apis/dto/response/board/get-hate.response.dto';
 import regionData from 'src/map/regionCodes.json';
 
+import './style.css';
 
 
 interface CommentItemProps {
@@ -22,8 +19,7 @@ interface CommentItemProps {
   onCommentDeleted : () => void;
 }
 
-// component : 댓글 컴포넌트 //
-
+// component: 댓글 컴포넌트 //
 function CommentItem({comments, onCommentDeleted}:CommentItemProps){
 
   const { boardNumber } = useParams();
@@ -55,7 +51,6 @@ function CommentItem({comments, onCommentDeleted}:CommentItemProps){
     // 댓글 삭제 시 바로 갱신
     onCommentDeleted();
   };
-
 
   return (
     <div className='comment-body'>
@@ -190,48 +185,46 @@ export default function BoardDetail() {
     setBoardImage(boardImage);
   };
 
+  // function: get comment response 처리 함수 //
+  const getCommentResponse = (responseBody: GetCommentResponseDto | ResponseDto | null) => {
+    const message =
+      !responseBody ? '서버에 문제가 있습니다.' :
+      responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' :
+      responseBody.code === 'AF' ? '인증에 실패했습니다.' : '';
+    
+    const isSuccess = responseBody !== null && responseBody.code === 'SU';
+    if (!isSuccess) {
+      alert(message);
+      return;
+    }
 
-    // function: get comment response 처리 함수 //
-    const getCommentResponse = (responseBody: GetCommentResponseDto | ResponseDto | null) => {
-      const message =
-        !responseBody ? '서버에 문제가 있습니다.' :
-        responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' :
-        responseBody.code === 'AF' ? '인증에 실패했습니다.' : '';
-      
-      const isSuccess = responseBody !== null && responseBody.code === 'SU';
-      if (!isSuccess) {
-        alert(message);
-        return;
-      }
-  
-      const { comments } = responseBody as GetCommentResponseDto;
-      setComments(comments);
-    };
-  
-    // function: post comment response 처리 함수 //
-    const postCommentResponse = (responseBody: ResponseDto | null) => {
-      const message =
-        !responseBody ? '서버에 문제가 있습니다.' :
-        responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' :
-        responseBody.code === 'AF' ? '인증에 실패했습니다.' : '';
-      
-      const isSuccess = responseBody !== null && responseBody.code === 'SU';
-      if (!isSuccess) {
-        alert(message);
-        return;
-      }
+    const { comments } = responseBody as GetCommentResponseDto;
+    setComments(comments);
+  };
 
-      setCommentContent('');
-      if (!boardNumber) return;
-      getCommentRequest(Number(boardNumber)).then(getCommentResponse);
-    };
+  // function: post comment response 처리 함수 //
+  const postCommentResponse = (responseBody: ResponseDto | null) => {
+    const message =
+      !responseBody ? '서버에 문제가 있습니다.' :
+      responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' :
+      responseBody.code === 'AF' ? '인증에 실패했습니다.' : '';
+    
+    const isSuccess = responseBody !== null && responseBody.code === 'SU';
+    if (!isSuccess) {
+      alert(message);
+      return;
+    }
 
+    setCommentContent('');
+    if (!boardNumber) return;
+    getCommentRequest(Number(boardNumber)).then(getCommentResponse);
+  };
 
-    // event handler: 댓글 변경 이벤트 처리 //
-    const onCommentChangeHandler = (event: ChangeEvent<HTMLTextAreaElement>) => {
-      const { value } = event.target;
-      setCommentContent(value);
-    };
+  // event handler: 댓글 변경 이벤트 처리 //
+  const onCommentChangeHandler = (event: ChangeEvent<HTMLTextAreaElement>) => {
+    const { value } = event.target;
+    setCommentContent(value);
+  };
 
   // function: get good response 처리 함수 //
   const getGoodResponse = (responseBody: GetGoodResponseDto | ResponseDto | null) => {
@@ -321,8 +314,7 @@ export default function BoardDetail() {
     //console.log('전송할 댓글 내용:', commentContent);
   };
 
-
-  // event : 댓글 삭제 시 prop 값으로 넘겨 이벤트 처리 //
+  // event handler: 댓글 삭제 시 prop 값으로 넘겨 이벤트 처리 //
   const refreshComments = () => {
     if (!boardNumber) return;
     getCommentRequest(Number(boardNumber)).then(getCommentResponse);
@@ -346,7 +338,6 @@ export default function BoardDetail() {
     putHateRequest(boardNumber, accessToken).then(putHateResponse);
   };
 
-
   const getRegionKeyByName = (areaCode:number, region : string) => {
     const selectedRegion = regionData.find(r => r.regionName === region && r.areaCode === areaCode);
     if (!selectedRegion) return null;
@@ -357,17 +348,17 @@ export default function BoardDetail() {
     };
   }
 
-    const handleSearch = async () => {
-      // 문자열 값으로부터 코드 번호 (key)를 역으로 찾기
-      // Object.entries() : 객체의 key-value 쌍을 배열 형태로 반환하는 메서드. 값으로부터 key를 찾을 때 유용하게 사용
-      // Object.entries(obj)
-      // obj: key-value로 구성된 객체
-      // 반환값: [[key1, value1], [key2, value2], ...] 형태의 배열
-      const [region1, region2] = boardAddressCategory.split(" ");
-      const areaCode = Number(Object.entries(areaCodeMap).find(([key, value]) => value === region1)?.[0]);
-      const address = getRegionKeyByName(areaCode, region2)?.ADM_SECT_C ?? '';
-      navigate(`${MAP_ABSOLUTE_PATH}?addressCategory=${address}`);
-    };
+  const handleSearch = async () => {
+    // 문자열 값으로부터 코드 번호 (key)를 역으로 찾기
+    // Object.entries() : 객체의 key-value 쌍을 배열 형태로 반환하는 메서드. 값으로부터 key를 찾을 때 유용하게 사용
+    // Object.entries(obj)
+    // obj: key-value로 구성된 객체
+    // 반환값: [[key1, value1], [key2, value2], ...] 형태의 배열
+    const [region1, region2] = boardAddressCategory.split(" ");
+    const areaCode = Number(Object.entries(areaCodeMap).find(([key, value]) => value === region1)?.[0]);
+    const address = getRegionKeyByName(areaCode, region2)?.ADM_SECT_C ?? '';
+    navigate(`${MAP_ABSOLUTE_PATH}?addressCategory=${address}`);
+  };
 
   // effect: 컴포넌트 로드 시 실행할 함수 //
   useEffect(() => {
@@ -421,17 +412,14 @@ export default function BoardDetail() {
             <button className="location-btn" onClick={handleSearch}>위치</button>
           </div>
         </div>
-
         {boardImage && (
           <div className="board-image">
             <img src={boardImage} alt="게시글 이미지" />
           </div>
         )}
-
         <div className="post-content">
           {boardContent}
         </div>
-
         <div className='reaction-container'>
           <div className='reaction-header'>
             <div className='reaction-box'>
@@ -448,30 +436,24 @@ export default function BoardDetail() {
             </div>
           </div>
         </div>
-
         {isWriter && (
           <div className="button-group">
             <button className="edit-button" onClick={onEditClickHandler}>수정</button>
             <button className="delete-button" onClick={onDeleteClickHandler}>삭제하기</button>
           </div>
         )}
-
         <div className="comment-input-section">
           <div className='comment-input'>
             <label>댓글 작성란</label>
             <textarea value={commentContent} placeholder="댓글을 입력하세요" onChange={onCommentChangeHandler} />
             <button className="comment-btn" onClick={onPostCommentClickHandler}>댓글 작성</button>
           </div>
-
           <div className="comment-list">
             {comments.map((commentItem, index) => 
                 <CommentItem key={index} comments={commentItem} onCommentDeleted={refreshComments}/>
             )}
           </div>
         </div>
-
-        
-
       </div>
     </div>
   );
