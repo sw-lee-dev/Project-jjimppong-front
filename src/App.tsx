@@ -1,9 +1,7 @@
 import React from 'react';
-import './App.css';
 import { Route, Routes } from 'react-router';
 import Layout from './layouts/Layout';
 import Main from './views/Main';
-
 import NaverMap from './map/NaverMap';
 import { AUTH_PATH, BOARD_PATH, BOARD_UPDATE_PATH, BOARD_VIEW_PATH, BOARD_WRITE_PATH, MAIN_PATH, MAP_PATH, MY_PAGE_MAIN_PATH, MY_PAGE_PATH, OTHERS_PATH } from './constants';
 import Auth from './views/Auth';
@@ -13,6 +11,8 @@ import BoardDetail from './views/Board/Detail';
 import BoardUpdate from './views/Board/Update';
 import MyPagePasswordCheck from './views/MyPage/PasswordCheck';
 import MyPageMain from './views/MyPage';
+
+import './App.css';
 
 function App() {
   return (
