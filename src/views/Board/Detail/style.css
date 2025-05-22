@@ -1,6 +1,6 @@
 #board-detail-wrapper {
   margin: 0 auto;
-  padding-top: 70px;
+  padding: 70px 0;
   min-width: 800px;
 }
 
@@ -24,11 +24,21 @@
   font-weight: bold;
 }
 
+#board-detail-wrapper .right {
+  display: flex;
+  align-items: center;
+}
+
 #board-detail-wrapper .badge {
-  background: #eee;
+  /* background: #eee;
   padding: 4px 8px;
-  border-radius: 5px;
+  border-radius: 5px; */
   margin-right: 8px;
+  width: 40px;
+  height: 40px;
+
+  background-size: cover;
+  background-position: 50% 50%;
 }
 
 #board-detail-wrapper .location-btn {
@@ -167,10 +177,13 @@
 }
 
 .comment-writer-level{
-  width: 80px;
-  height: 80px;
-  background-color: lightgray;
-  margin: 5px;
+  width: 50px;
+  height: 50px;
+  
+  background-position: 50% 50%;
+  background-size: cover;
+
+  margin: 5px 5px 5px 10px;
 }
 
 .comment-info{
@@ -207,6 +220,46 @@
 
 .comment-content{
   padding: 8px;
+}
+
+
+#board-detail-wrapper .button-container {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+#board-detail-wrapper .go-list {
+  display: flex;
+  cursor: pointer;
+
+  background-color: black;
+  color: white;
+  font-size: 14px;
+  font-family: Arial;
+  margin: 20px 0;
+  padding: 8px 16px;
+  border-radius: 6px;
+}
+
+
+#board-detail-wrapper .button-container {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+#board-detail-wrapper .go-list {
+  display: flex;
+  cursor: pointer;
+
+  background-color: black;
+  color: white;
+  font-size: 14px;
+  font-family: Arial;
+  margin: 20px 0;
+  padding: 8px 16px;
+  border-radius: 6px;
 }
 
 .button-group {

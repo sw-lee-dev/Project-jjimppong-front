@@ -5,10 +5,10 @@ import IdSearch from './IdSearch';
 import PasswordReset from './PasswordReset';
 import SnsSignUp from './SnsSignUp';
 import { AuthPage } from '../../types/aliases';
-import { useCookies } from 'react-cookie';
-import { ACCESS_TOKEN, JOIN_TYPE, SNS_ID } from '../../constants';
-
 import './style.css';
+import { useCookies } from 'react-cookie';
+import { useNavigate } from 'react-router';
+import { ACCESS_TOKEN, JOIN_TYPE, MAIN_ABSOLUTE_PATH, SNS_ID } from '../../constants';
 
 export default function Auth() {
 
@@ -17,6 +17,9 @@ export default function Auth() {
 
   // state: 페이지 상태 //
   const [page, setPage] = useState<AuthPage>('sign-in');
+
+  // function: 네비게이터 함수 //
+  const navigator = useNavigate();
 
   // event handler: 페이지 변경 이벤트 처리 //
   const onPageChangeHandler = (page: AuthPage) => {

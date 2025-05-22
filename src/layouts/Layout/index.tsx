@@ -3,7 +3,7 @@ import {Outlet, useLocation, useNavigate} from 'react-router';
 import NavLogo from 'src/assets/images/small_logo.png'
 
 import './style.css';
-import { ACCESS_TOKEN, AUTH_ABSOLUTE_PATH, MAIN_ABSOLUTE_PATH, MAP_ABSOLUTE_PATH, MY_PAGE_ABSOLUTE_PATH, MY_PAGE_MAIN_ABSOLUTE_PATH, ROOT_PATH } from 'src/constants';
+import { ACCESS_TOKEN, AUTH_ABSOLUTE_PATH, JOIN_TYPE, MAIN_ABSOLUTE_PATH, MAP_ABSOLUTE_PATH, MY_PAGE_ABSOLUTE_PATH, MY_PAGE_MAIN_ABSOLUTE_PATH, ROOT_PATH, SNS_ID } from 'src/constants';
 import { useCookies } from 'react-cookie';
 import { useSignInUser } from 'src/hooks';
 
@@ -36,11 +36,15 @@ export default function Layout() {
 
     // event handler: 홈 클릭 이벤트 처리 //
     const onHomeClickHandler = () => {
+        removeCookie(JOIN_TYPE, { path: '/' });
+        removeCookie(SNS_ID, { path: '/' });
         navigator(MAIN_ABSOLUTE_PATH);
     };
 
     // event handler: 지도 클릭 이벤트 처리 //
     const onMapClickHandler = () => {
+        removeCookie(JOIN_TYPE, { path: '/' });
+        removeCookie(SNS_ID, { path: '/' });
         navigator(MAP_ABSOLUTE_PATH);
     }
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import TitleLogo from 'src/assets/images/white_logo.png';
 

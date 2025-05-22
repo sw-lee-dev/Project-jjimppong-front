@@ -1,16 +1,19 @@
 import React, { useEffect, useState, ChangeEvent, useCallback } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
+
 import { fileUploadRequest, getBoardRequest, patchBoardRequest, deleteBoardRequest } from 'src/apis';
 import { GetBoardResponseDto } from 'src/apis/dto/response/board';
 import { PatchBoardRequestDto } from 'src/apis/dto/request/board';
 import { ACCESS_TOKEN, BOARD_ABSOLUTE_PATH, BOARD_VIEW_ABSOLUTE_PATH } from 'src/constants';
+
+import './style.css';
+
 import RegionSelectModal from 'src/components/RegionSelectModal';
 import ImageIcon from 'src/assets/images/image.png';
 import PaperclipIcon from 'src/assets/images/Paperclip.png';
 import { ResponseDto } from 'src/apis/dto/response';
-
-import './style.css';
+import XSquareIcon from 'src/assets/images/Xsquare.png';
 
 const categories = ['맛집', '축제', '팝업스토어', '교통', '시설'];
 
@@ -31,10 +34,12 @@ export default function BoardUpdate() {
     boardViewCount: 0,
     boardScore: 0,
     boardImage: '',
+    textFileUrl: '',
   });
 
   const [areaModalOpen, setAreaModalOpen] = useState(false);
   const [categorySelected, setCategorySelected] = useState('');
+  const [attachedFileName, setAttachedFileName] = useState<string>('');
 
   const getBoardResponseHandler = useCallback((response: GetBoardResponseDto | ResponseDto | null) => {
     if (!response || response.code !== 'SU') {
@@ -45,7 +50,7 @@ export default function BoardUpdate() {
   
     const {
       boardTitle, boardContent, boardAddressCategory, boardDetailCategory,
-      boardAddress, boardImage, boardWriteDate, boardScore, boardViewCount
+      boardAddress, boardImage, boardWriteDate, boardScore, boardViewCount, textFileUrl,
     } = response as GetBoardResponseDto;
   
     setForm({
@@ -56,13 +61,27 @@ export default function BoardUpdate() {
       boardDetailCategory,
       boardAddress,
       boardWriteDate,
-      boardViewCount,
+      boardViewCount, 
       boardScore,
       boardImage: boardImage ?? '',
+      textFileUrl: textFileUrl ?? '',
     });
   
+    // 이미지 및 파일 상태 설정
+    if (boardImage) {
+      setPreviewUrl(boardImage);
+    }
+    if (textFileUrl) {
+      const fileName = textFileUrl.split('/').pop() || textFileUrl;
+      setAttachedFile({ name: fileName } as File);
+      setAttachedFileName(fileName);
+    }
+
     setCategorySelected(boardDetailCategory);
-  }, [navigate, boardNumber]); // 의존성 배열에 navigate와 boardNumber 넣어주기
+  },
+  [navigate, boardNumber]
+
+); // 의존성 배열에 navigate와 boardNumber 넣어주기
 
   useEffect(() => {
     if (!boardNumber) return;
@@ -80,6 +99,14 @@ export default function BoardUpdate() {
     setForm((prev) => ({ ...prev, boardDetailCategory: category }));
   };
 
+  const uploadFile = async (file: File | null): Promise<string> => {
+    if (!file) return '';
+    const formData = new FormData();
+    formData.append('file', file);
+    const uploadedUrl = await fileUploadRequest(formData);
+    return uploadedUrl || '';
+  };
+
   const handleUpdate = async () => {
     if (!form.boardTitle || !form.boardContent || !categorySelected) {
       alert('필수 항목을 모두 입력해주세요.');
@@ -87,18 +114,24 @@ export default function BoardUpdate() {
     }
   
     let uploadedImageUrl = form.boardImage;
+    let uploadedFileUrl = form.textFileUrl;
   
     if (imageFile) {
       const formData = new FormData();
       formData.append('file', imageFile);
   
-      const imageResponse = await fileUploadRequest(formData);
-      if (imageResponse) uploadedImageUrl = imageResponse;
+      const imageUrl = await fileUploadRequest(formData);
+      if (imageUrl) uploadedImageUrl = imageUrl;
     }
-  
+
+    if (attachedFile) {
+      uploadedFileUrl = await uploadFile(attachedFile); // ✨ 파일 업로드 및 URL 획득
+    }
+
     const requestBody: PatchBoardRequestDto = {
       ...form,
       boardImage: uploadedImageUrl,
+      textFileUrl: uploadedFileUrl,
     };
   
     patchBoardRequest(Number(boardNumber), requestBody, accessToken)
@@ -141,12 +174,33 @@ export default function BoardUpdate() {
 
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string>('');
+  const [attachedFile, setAttachedFile] = useState<File | null>(null); // ✨ 파일 상태 추가
 
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
     setImageFile(file);
     setPreviewUrl(URL.createObjectURL(file));
+  };
+
+  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setAttachedFile(file);
+      setAttachedFileName(file.name); // 파일 이름 설정
+    }
+  };
+
+  const removeImage = () => { // Function to remove image
+    setImageFile(null);
+    setPreviewUrl('');
+    setForm(prev => ({ ...prev, boardImage: '' })); // Clear image URL in form
+  };
+
+  const removeFile = () => {  // Function to remove file
+    setAttachedFile(null);
+    setAttachedFileName('');
+    setForm((prev) => ({ ...prev, textFileUrl: '' }));
   };
 
   return (
@@ -184,17 +238,38 @@ export default function BoardUpdate() {
           hidden
           id="image-upload"
         />
-
-        {previewUrl && (
-          <div className="image-preview-wrapper">
-            <img src={previewUrl} alt="미리보기" className="image-preview" />
+        {imageFile || previewUrl ? (
+          <div className="file-control-container">
+            <button className="remove-button image-remove-button" onClick={removeImage}>
+              <img src={XSquareIcon} alt="Remove" className="remove-icon" />
+            </button>
           </div>
-        )}
-
-        <label className="editor-icon-label">
+        ) : null}
+        {/* <label htmlFor="text-upload" className="editor-icon-label" style={{ marginLeft: '10px' }}>
           <img src={PaperclipIcon} alt="파일 첨부" className="editor-icon" />
         </label>
+        <input
+          type="file"
+          accept=".txt,.pdf"
+          style={{ display: 'none' }}
+          onChange={handleFileChange}
+          id="text-upload"
+        /> */}
+        {attachedFile && (
+          <div className="file-control-container attached-file-name">
+            <span style={{ marginRight: '5px' }}>{attachedFile?.name}</span>
+            <button className="remove-button file-remove-button" onClick={removeFile}>
+              <img src={XSquareIcon} alt="Remove" className="remove-icon" />
+            </button>
+          </div>
+        )}
       </div>
+
+      {previewUrl && (
+        <div className="image-preview-wrapper">
+          <img src={previewUrl} alt="미리보기" className="image-preview" />
+        </div>
+      )}
   
       <div className="input-label">내용을 입력해주세요.</div>
       <textarea name="boardContent" value={form.boardContent} onChange={handleChange} />
@@ -211,6 +286,6 @@ export default function BoardUpdate() {
           onSelect={handleRegionSelect}
         />
       )}
-    </div>  
+    </div>
   );
   }

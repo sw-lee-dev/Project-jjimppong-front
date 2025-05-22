@@ -1,15 +1,15 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
-import { useNavigate } from 'react-router';
-import { SignInResponseDto } from 'src/apis/dto/response/auth';
-import { ResponseDto } from 'src/apis/dto/response';
-import { ACCESS_TOKEN, MAIN_ABSOLUTE_PATH, ROOT_PATH } from 'src/constants';
-import { SignInRequestDto } from 'src/apis/dto/request/auth';
-import { signInRequest, SNS_SIGN_IN_URL } from 'src/apis';
-import InputBox from 'src/components/InputBox';
-import { AuthPage } from 'src/types/aliases';
 
 import './style.css';
+import { Link, useNavigate } from 'react-router';
+import { SignInResponseDto } from '../../../apis/dto/response/auth';
+import { ResponseDto } from '../../../apis/dto/response';
+import { ACCESS_TOKEN, MAIN_ABSOLUTE_PATH, ROOT_PATH, SNS_SIGN_UP } from '../../../constants';
+import { SignInRequestDto } from '../../../apis/dto/request/auth';
+import { signInRequest, SNS_SIGN_IN_URL } from '../../../apis';
+import InputBox from '../../../components/InputBox';
+import { AuthPage } from 'src/types/aliases';
 
 // interface: 로그인 컴포넌트 속성 //
 interface Props {
@@ -32,7 +32,7 @@ export default function SignIn(props: Props) {
   const [userIdMessage, setUserIdMessage] = useState<string>('');
   // state: 유저 비밀번호 메세지 상태 //
   const [userPasswordMessage, setUserPasswordMessage] = useState<string>('');
-
+ 
   // function: 네비게이터 함수 //
   const navigator = useNavigate();
 

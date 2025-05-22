@@ -13,5 +13,5 @@ export default interface GetBoardResponseDto extends ResponseDto {
   boardAddress: string;
   boardImage: string | null;
   boardScore: number;
-  textFileUrl?: string;
+  textFileUrl: string | null;
 }

@@ -1,16 +1,17 @@
 import { ChangeEvent, useEffect, useMemo, useState } from 'react';
 import { Address, useDaumPostcodePopup } from 'react-daum-postcode';
-import { AuthPage } from 'src/types/aliases';
-import InputBox from 'src/components/InputBox';
-import { EmailAuthCheckRequestDto, IdCheckRequestDto,  NicknameCheckRequestDto,  SignUpRequestDto } from 'src/apis/dto/request/auth';
-import { idCheckRequest, nicknameCheckRequest } from 'src/apis';
-import { ResponseDto } from 'src/apis/dto/response';
+import './style.css';
+import { AuthPage } from '../../../types/aliases';
+import InputBox from '../../../components/InputBox';
+import { EmailAuthCheckRequestDto, EmailAuthRequestDto, IdCheckRequestDto,  NicknameCheckRequestDto,  SignUpRequestDto } from '../../../apis/dto/request/auth';
+import { EmailAuthCheckRequest, EmailAuthRequest, idCheckRequest, nicknameCheckRequest, signUpRequest, SNS_SIGN_IN_URL } from '../../../apis';
+import { ResponseDto } from '../../../apis/dto/response';
 import { useCookies } from 'react-cookie';
-import { JOIN_TYPE, ROOT_PATH, SNS_ID } from 'src/constants';
+import { JOIN_TYPE, ROOT_PATH, SNS_ID } from '../../../constants';
 import JoinType from 'src/types/aliases/join-type.alias';
 import axios from 'axios';
+import { IdSearchResponseDto } from 'src/apis/dto/response/auth';
 
-import './style.css';
 
 // interface: 회원가입 컴포넌트 속성 //
 interface Props {
@@ -124,6 +125,8 @@ export default function SignUp(props: Props) {
   ]);
   // variable: 회원가입 버튼 클래스 //
   const signUpButtonClass = `button ${isSignUpButtonActive ? 'primary' : 'disable'} fullwidth`;
+  // variable: SNS 회원가입 여부 //
+  const isSns = cookies[JOIN_TYPE] !== undefined && cookies[SNS_ID] !== undefined;
 
   // function: 다음 포스트 코드 팝업 오픈 함수 //
   const open = useDaumPostcodePopup();
@@ -199,17 +202,54 @@ export default function SignUp(props: Props) {
     setAuthNumberChecked(isSuccess);
   };
 
-  // onChange에서는 필터링 없이 그대로 저장
-  const onUserNameChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
-    const { value } = event.target;
-    setUserName(value);
+  const emailAuthResponse = (responseBody: ResponseDto | null) => {
+    const isSuccess = responseBody !== null && responseBody.code === 'SU';
+    
+    const message = 
+      !responseBody ? '서버에 문제가 있습니다' :
+      responseBody.code === 'DBE' ? '서버에 문제가 있습니다' :
+      responseBody.code === 'EU' ? '인증번호가 틀렸습니다' :
+      responseBody.code === 'VF' ? '인증번호를 입력하세요' :
+      '인증번호를 전송하였습니다.';
   
-    // 유효성 체크 (한글 외 입력은 가능하지만 활성화 불가)
-    const regexp = /^[가-힣]{2,5}$/;
-    const isMatch = regexp.test(value);
-    const message = isMatch ? '' : '한글로 2 ~ 5자 입력해주세요';
-    setUserNameMessage(message);
+    setUserEmailMessage(message);
+    setUserEmailMessageError(!isSuccess);
+    setUserEmailChecked(isSuccess);
   };
+
+  // function: sign up response 처리 함수 //
+  const signUpResponse = (responseBody: ResponseDto | null) => {
+    const message = 
+      !responseBody ? '서버에 문제가 있습니다' :
+      responseBody.code === 'DBE' ? '서버에 문제가 있습니다' :
+      responseBody.code === 'EU' ? '이미 사용중인 아이디입니다' :
+      responseBody.code === 'VF' ? '모두 입력해주세요' : '';
+    
+    const isSuccess = responseBody !== null && responseBody.code === 'SU';
+    if (!isSuccess) {
+      if (responseBody && responseBody.code === 'EU') {
+        setUserIdMessage(message);
+        setUserIdMessageError(true);
+        return;
+      }
+      alert(message);
+      return;
+    }
+
+    onPageChange('sign-in');
+  };
+
+    // onChange에서는 필터링 없이 그대로 저장
+    const onUserNameChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
+      const { value } = event.target;
+      setUserName(value);
+    
+      // 유효성 체크 (한글 외 입력은 가능하지만 활성화 불가)
+      const regexp = /^[가-힣]{2,5}$/;
+      const isMatch = regexp.test(value);
+      const message = isMatch ? '' : '한글로 2 ~ 5자 입력해주세요';
+      setUserNameMessage(message);
+    };
 
   // event handler: 사용자 닉네임 변경 이벤트 처리 //
   const onUserNicknameChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
@@ -234,6 +274,7 @@ export default function SignUp(props: Props) {
     setUserEmailMessage(message);
     setUserEmailChecked(isMatch);
     setUserEmailMessageError(!isMatch);
+
   };
 
   // event handler: 사용자 인증번호 변경 이벤트 처리 //
@@ -259,6 +300,7 @@ export default function SignUp(props: Props) {
     setUserIdMessage(message);
     setUserIdChecked(isMatch);
     setUserIdMessageError(!isMatch);
+
   };
 
   // event handler: 사용자 비밀번호 변경 이벤트 처리 //
@@ -371,39 +413,40 @@ export default function SignUp(props: Props) {
   }, [userPassword, userPasswordCheck]);
 
   // 이메일 중복확인 및 인증번호 전송 처리 함수
-  const onCheckUserEmailClickHandler = () => {
-    if (!isUserEmailCheckButtonActive) return;
+const onCheckUserEmailClickHandler = () => {
+  if (!isUserEmailCheckButtonActive) return;
 
-    // 로딩 상태 시작
-    setIsLoadingEmailSend(true);
+  // 로딩 상태 시작
+  setIsLoadingEmailSend(true);
 
-    const requestBody = {
-      userEmail: userEmail
-    };
-
-    // 이메일 중복 확인 후 인증번호 전송
-    axios.post(EMAIL_AUTH_URL, requestBody)
-      .then(response => {
-        console.log('Server Response:', response.data); 
-        if (response.data.code) {
-          alert('인증번호를 전송했습니다.');
-          userEmailCheckResponse(response.data);
-          setUserEmailChecked(true);
-        } else {
-          alert('이메일 인증 요청에 실패했습니다.');
-          alert(response.data.message);  // 실패 메시지 처리
-          setUserEmailChecked(false);
-        }
-      })
-      .catch(error => {
-        alert('이메일 인증 요청에 실패했습니다.');
-        setUserEmailChecked(false);
-      })
-      .finally(() => {
-        // 로딩 상태 종료
-        setIsLoadingEmailSend(false);
-      });
+  const requestBody = {
+    userEmail: userEmail
   };
+
+  // 이메일 중복 확인 후 인증번호 전송
+  axios.post(EMAIL_AUTH_URL, requestBody)
+    .then(response => {
+      console.log('Server Response:', response.data); 
+      if (response.data.code) {
+        alert('인증번호를 전송했습니다.');
+        userEmailCheckResponse(response.data);
+        setUserEmailChecked(true);
+      } else {
+        alert('이메일 인증 요청에 실패했습니다.');
+        alert(response.data.message);  // 실패 메시지 처리
+        setUserEmailChecked(false);
+      }
+    })
+    .catch(error => {
+      alert('이메일 인증 요청에 실패했습니다.');
+      setUserEmailChecked(false);
+    })
+    .finally(() => {
+      // 로딩 상태 종료
+      setIsLoadingEmailSend(false);
+    });
+};
+
 
   // 이메일, 인증번호 인증 확인 함수 //
   const onCheckAuthNumberClickHandler = () => {

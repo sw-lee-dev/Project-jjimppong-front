@@ -9,4 +9,5 @@ export default interface PatchBoardRequestDto {
   boardViewCount: number;
   boardScore: number;
   boardImage?: string | null;
+  textFileUrl?: string | null;
 }

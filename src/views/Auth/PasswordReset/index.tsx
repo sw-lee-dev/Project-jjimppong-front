@@ -1,11 +1,12 @@
 import { ChangeEvent, useMemo, useState } from 'react';
-import { AuthPage } from 'src/types/aliases';
-import InputBox from 'src/components/InputBox';
-import { EmailAuthCheckRequestDto, PasswordResetRequestDto } from 'src/apis/dto/request/auth';
-import { ResponseDto } from 'src/apis/dto/response';
+import './style.css';
+import { AuthPage } from '../../../types/aliases';
+import InputBox from '../../../components/InputBox';
+import { EmailAuthCheckRequestDto, EmailAuthRequestDto, IdSearchRequestDto, PasswordResetRequestDto } from '../../../apis/dto/request/auth';
+import { EmailAuthCheckRequest, EmailAuthRequest } from '../../../apis';
+import { ResponseDto } from '../../../apis/dto/response';
 import axios from 'axios';
 
-import './style.css';
 
 // interface: 비밀번호 찾기 컴포넌트 속성 //
 interface Props {
@@ -52,6 +53,7 @@ export default function PasswordReset(props: Props) {
   const [isUserEmailChecked, setUserEmailChecked] = useState<boolean>(false);
   // state: 사용자 인증번호 확인 상태 //
   const [isAuthNumberChecked, setAuthNumberChecked] = useState<boolean>(false);
+
 
   // variable: 이메일 중복 확인 버튼 활성화 //
   const isUserEmailCheckButtonActive = userEmail !== '';
@@ -100,6 +102,27 @@ export default function PasswordReset(props: Props) {
     setAuthNumberChecked(isSuccess);
   };
 
+  // function: id search response 처리 함수 //
+  const passwordResetResponse = (responseBody: ResponseDto | null) => {
+    const message = 
+      !responseBody ? '서버에 문제가 있습니다' :
+      responseBody.code === 'DBE' ? '서버에 문제가 있습니다' :
+      responseBody.code === 'AF' ? '이메일 인증에 실패하였습니다 ' :
+      responseBody.code === 'VF' ? '모두 입력해주세요' : '';
+    
+    const isSuccess = responseBody !== null && responseBody.code === 'SU';
+    if (!isSuccess) {
+      if (responseBody && responseBody.code === 'EU') {
+        setUserIdMessage(message); 
+        return;
+      }
+      alert(message);
+      return;
+    }
+
+    onPageChange('main');
+  };
+
   // event handler: 사용자 아이디 변경 이벤트 처리 //
   const onUserIdChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
     let { value } = event.target;
@@ -131,6 +154,7 @@ export default function PasswordReset(props: Props) {
     setUserEmailMessage(message);
     setUserEmailChecked(isMatch);
     setUserEmailMessageError(!isMatch);
+
   };
 
   // event handler: 사용자 인증번호 변경 이벤트 처리 //
@@ -169,6 +193,7 @@ export default function PasswordReset(props: Props) {
         setIsLoadingEmailSend(false); // 종료
       });
   };
+
 
   // 이메일, 인증번호 인증 확인 함수 //
   const onCheckAuthNumberClickHandler = () => {

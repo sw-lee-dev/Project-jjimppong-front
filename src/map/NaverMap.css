@@ -1,4 +1,11 @@
 /* NaverMap.jsx */
+
+#navigate-button:hover{
+    background-color: white;
+    border: solid red 1px;
+    color: red;
+}
+
 .toggle-header {
     font-size: 16px;
     font-weight: bold;

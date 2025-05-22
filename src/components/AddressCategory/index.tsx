@@ -3,10 +3,16 @@ import { useState, useEffect } from 'react';
 import regionData from 'src/assets/data/regionCodes.json';
 import { Region } from 'src/types/interfaces';
 import './style.css';
+import { useLocation } from "react-router-dom";
 
 type Props = {
     onSelect: (areaCode: number | null, sigunguCode: number | null) => void;
 };
+
+function useQuery() {
+    const { search } = useLocation();
+    return new URLSearchParams(search);
+}
 
 export default function AddressCategory({ onSelect }: Props) {
     const regions: Region[] = regionData;
@@ -14,6 +20,13 @@ export default function AddressCategory({ onSelect }: Props) {
     const [selectedSigunguCode, setSelectedSigunguCode] = useState<number | null>(null);
     const [sidoOpen, setSidoOpen] = useState(false);
     const [gunguOpen, setGunguOpen] = useState(false);
+
+
+    const query = useQuery();
+    const addressCategoryParam1 = query.get("addressCategory1");
+    const addressCategoryParam2 = query.get("addressCategory2");
+
+    
 
     const areaCodeMap: Record<number, string> = {
         0: "전체",
@@ -65,6 +78,16 @@ export default function AddressCategory({ onSelect }: Props) {
         (region) => region.areaCode === selectedAreaCode
     );
 
+
+    useEffect(() => {
+        if (addressCategoryParam1) {
+            setSelectedAreaCode(Number(addressCategoryParam1));
+        }
+        if (addressCategoryParam2) {
+            setSelectedSigunguCode(Number(addressCategoryParam2));
+        }
+    }, [addressCategoryParam1, addressCategoryParam2]);
+
     return (
         <div id="region-wrapper">
 
@@ -75,6 +98,7 @@ export default function AddressCategory({ onSelect }: Props) {
                         {selectedAreaCode ? areaCodeMap[selectedAreaCode] : '전체'}
                     </div>
                     {
+                        
                         sidoOpen && (
                             <ul className='sido-dropdown-list'>
                                 {uniqueAreaCodes.map((code) => (
@@ -105,8 +129,6 @@ export default function AddressCategory({ onSelect }: Props) {
                     }
                 </div>
             </div>
-            
-        
     </div>
     )
 }

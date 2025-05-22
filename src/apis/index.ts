@@ -20,7 +20,7 @@ const API_DOMAIN = process.env.REACT_APP_API_DOMAIN;
 
 const AUTH_MODULE_URL = `${API_DOMAIN}/api/v1/auth`;
 const EMAIL_AUTH_URL = `${AUTH_MODULE_URL}/email-auth`;
-const EMAIL_AUTH_CHECK_URL = `${AUTH_MODULE_URL}/email-authcheck`;
+const EMAIL_AUTH_CHECK_URL = `${AUTH_MODULE_URL}/email-auth-check`;
 const ID_CHECK_URL = `${AUTH_MODULE_URL}/id-check`;
 const ID_SEARCH_URL = `${AUTH_MODULE_URL}/id-search`;
 const NICKNAME_CHECK_URL = `${AUTH_MODULE_URL}/nickname-check`;

@@ -86,7 +86,8 @@ export default function MyPageUserInfoUpdate({onModalViewChange}: UserInfoUpdate
     const message = 
       !responseBody ? '서버에 문제가 있습니다.' :
       responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' : 
-      responseBody.code === 'EU' ? '이미 사용중인 닉네임입니다.' : '사용 가능한 닉네임입니다.';
+      responseBody.code === 'EU' ? '이미 사용중인 닉네임입니다.' : 
+      responseBody.code === 'VF' ? '공백을 포함할 수 없습니다.' : '사용 가능한 닉네임입니다.';
 
     const isSuccess = responseBody !== null && responseBody.code === 'SU';
     setUpdateNicknameMessage(message);
@@ -201,10 +202,11 @@ export default function MyPageUserInfoUpdate({onModalViewChange}: UserInfoUpdate
   const onUpdateClickHandler = async () => {
     const message = 
       !updateNickname ? '닉네임을 입력하세요.' :
+      !isUpdateNicknameChecked ? '닉네임 중복 확인해주세요.' :
       joinType === 'NORMAL' && !updatePassword ? '비밀번호를 입력하세요.' :
       joinType === 'NORMAL' && !updatePasswordCheck ? '비밀번호 확인을 입력하세요.' :
-      !isUpdatePasswordChecked ? '비밀번호는 영문, 숫자를 혼용하여 8 ~ 13자 입력해주세요.' :
-      !isUpdatePasswordEquals ? '비밀번호 확인의 일치여부를 확인해주세요.' :
+      joinType === 'NORMAL' && !isUpdatePasswordChecked ? '비밀번호는 영문, 숫자를 혼용하여 8 ~ 13자 입력해주세요.' :
+      joinType === 'NORMAL' && !isUpdatePasswordEquals ? '비밀번호 확인의 일치여부를 확인해주세요.' :
       !updateAddress ? '주소를 입력하세요.' : '';
     
     if (!isUpdateNicknameChecked) {
@@ -213,8 +215,8 @@ export default function MyPageUserInfoUpdate({onModalViewChange}: UserInfoUpdate
 
     const isCheck = 
     joinType === 'NORMAL' ? 
-    updateNickname && updatePassword && updatePasswordCheck && updateAddress && isUpdatePasswordChecked && isUpdatePasswordEquals
-    : updateNickname && updateAddress;
+    updateNickname && updatePassword && updatePasswordCheck && updateAddress && isUpdatePasswordChecked && isUpdatePasswordEquals && isUpdateNicknameChecked
+    : updateNickname && updateAddress && isUpdateNicknameChecked;
     if (!isCheck) {
       alert(message);
       return;

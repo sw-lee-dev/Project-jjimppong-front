@@ -83,12 +83,13 @@ textarea[name="boardContent"] {
   display: flex;
   align-items: center;
   gap: 12px;
+  margin-bottom: 20px;
 }
 
 /* 에디터 아이콘 */
 .editor-icon {
-  width: 20px;
-  height: 20px;
+  width: 25px;
+  height: 25px;
   cursor: pointer;
 }
 
@@ -112,6 +113,30 @@ textarea[name="boardContent"] {
   height: auto;
   border-radius: 8px;
   border: 1px solid #ddd;
+}
+
+/* 첨부된 파일 표시 스타일 */
+.attached-file {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #555;
+}
+
+/* 제거 버튼 스타일 */
+.remove-button {
+  position: relative;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  margin-left: 5px;
+}
+
+.remove-icon {
+  width: 15px;
+  height: 15px;
 }
 
 /* 버튼 그룹 */
@@ -147,3 +172,13 @@ textarea[name="boardContent"] {
   background-color: #1976d2;
   color: #fff;
 }
+
+.file-control-container {
+  display: flex;
+  align-items: center;
+}
+
+.file-remove-button {
+  margin-left: 5px;
+}
+

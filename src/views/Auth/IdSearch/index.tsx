@@ -1,11 +1,14 @@
 import { ChangeEvent, useMemo, useState } from 'react';
-import { AuthPage } from 'src/types/aliases';
-import InputBox from 'src/components/InputBox';
-import { EmailAuthCheckRequestDto, IdSearchRequestDto } from 'src/apis/dto/request/auth';
-import { ResponseDto } from 'src/apis/dto/response';
-import axios from 'axios';
-
 import './style.css';
+import { AuthPage } from '../../../types/aliases';
+import InputBox from '../../../components/InputBox';
+import { EmailAuthCheckRequestDto, EmailAuthRequestDto, IdSearchRequestDto } from '../../../apis/dto/request/auth';
+import { EmailAuthCheckRequest, EmailAuthRequest } from '../../../apis';
+import { ResponseDto } from '../../../apis/dto/response';
+import { useCookies } from 'react-cookie';
+import axios from 'axios';
+import { IdSearchResponseDto } from 'src/apis/dto/response/auth';
+
 
 // interface: 아이디 찾기 컴포넌트 속성 //
 interface Props {
@@ -96,9 +99,30 @@ export default function IdSearch(props: Props) {
     setAuthNumberMessageError(!isSuccess);
     setAuthNumberChecked(isSuccess);
   };
-  
-  // onChange에서는 필터링 없이 그대로 저장
-  const onUserNameChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
+
+  // function: id search response 처리 함수 //
+  const idSearchResponse = (responseBody: ResponseDto | null) => {
+    const message = 
+      !responseBody ? '서버에 문제가 있습니다' :
+      responseBody.code === 'DBE' ? '서버에 문제가 있습니다' :
+      responseBody.code === 'AF' ? '이메일 인증에 실패하였습니다 ' :
+      responseBody.code === 'VF' ? '모두 입력해주세요' : '';
+    
+    const isSuccess = responseBody !== null && responseBody.code === 'SU';
+    if (!isSuccess) {
+      if (responseBody && responseBody.code === 'EU') {
+        setUserNameMessage(message);
+        return;
+      }
+      alert(message);
+      return;
+    }
+
+    onPageChange('main');
+  };
+
+    // onChange에서는 필터링 없이 그대로 저장
+    const onUserNameChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
     setUserName(value);
   

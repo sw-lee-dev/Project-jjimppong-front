@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
+
 import { fileUploadRequest, postBoardRequest } from 'src/apis';
 import { useNavigate } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 import { ACCESS_TOKEN } from 'src/constants';
+import './style.css';
+
 import ImageIcon from 'src/assets/images/image.png';
 import PaperclipIcon from 'src/assets/images/Paperclip.png';
-import RegionSelectModal from 'src/components/RegionSelectModal';
 
-import './style.css';
+import RegionSelectModal from 'src/components/RegionSelectModal';
 
 const categories = ['맛집', '축제', '팝업 스토어', '교통', '시설'];
 
@@ -152,10 +154,10 @@ const BoardWrite = () => {
         </label>
         <input id="image-upload" type="file" accept="image/*" style={{ display: 'none' }} onChange={handleImageChange} />
 
-        <label htmlFor="text-upload">
+        {/* <label htmlFor="text-upload">
           <img src={PaperclipIcon} alt="텍스트 파일" className="editor-icon" />
         </label>
-        <input id="text-upload" type="file" accept=".txt,.pdf" style={{ display: 'none' }} onChange={handleFileChange} />
+        <input id="text-upload" type="file" accept=".txt,.pdf" style={{ display: 'none' }} onChange={handleFileChange} /> */}
       </div>
 
       {previewImage && (
