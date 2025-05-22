@@ -6,7 +6,7 @@
 ![alt text](README.png)
 
 <div align="center">
-<h3><a href="http://13.124.81.10:3000/" target="_blank">배포 링크 - http://13.124.81.10:3000/</a></h3></div>
+<h3><a href="http:///" target="_blank">배포 링크 - http:///</a></h3></div>
 
 
 ## 📖 프로젝트 개요
@@ -34,7 +34,7 @@
 ## ✈️ 프로젝트 실행 방법
 ```bash
 # 1. 클론 및 폴더 이동
-git clone https://github.com/JJIMBBONG/jjimbbong-front.git
+git clone https://github.com/sw-lee-dev/Project-jjimppong-front.git
 cd jjimbbong-front
 ```
 ```bash
@@ -65,44 +65,19 @@ REACT_APP_NAVER_CLIENT_ID=zgdo8rbm3b
 │ ├ 📂 apis
 │ │ └ 📂 dto
 │ ├ 📂 assets
-│ │ ├ 📂 data
-│ │ ├ 📂 fonts
-│ │ └ 📂 images
 │ ├ 📂 components
-│ │ ├ 📂 AddressCategory
-│ │ ├ 📂 DetailCategory
-│ │ ├ 📂 InputBox
-│ │ ├ 📂 Modal
-│ │ ├ 📂 Pagination
-│ │ └ 📂 RegionSelectModal
 │ ├ 📂 constants
 │ ├ 📂 hooks
 │ ├ 📂 layouts
-│ │ └ 📂 Layout
 │ ├ 📂 map
 │ ├ 📂 stores
 │ ├ 📂 types
-│ │ ├ 📂 aliases
-│ │ └ 📂 interfaces
 │ ├ 📂 utils
 │ └ 📂 views
 │   ├ 📂 Auth
-│   │ ├ 📂 IdSearch
-│   │ ├ 📂 PasswordReset
-│   │ ├ 📂 SignIn
-│   │ ├ 📂 SignUp
-│   │ └ 📂 SnsSignUp
 │   ├ 📂 Board
-│   │ ├ 📂 Detail
-│   │ ├ 📂 Recommand
-│   │ ├ 📂 Update
-│   │ └ 📂 Write
 │   ├ 📂 Main
-│   │ └ 📂 MainTitle
 │   └ 📂 MyPage
-│     ├ 📂 PasswordCheck
-│     ├ 📂 UserInfo
-│     └ 📂 UserInfoUpdate
 ├ 📂 public / # 정적 파일(HTML, 이미지, data)  
 ├ 📃 .env / # 환경 변수 파일 
 ├ 📄 package.json / # 프로젝트 설정 및 의존성 정보 
