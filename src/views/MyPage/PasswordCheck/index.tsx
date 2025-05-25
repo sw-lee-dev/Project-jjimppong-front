@@ -34,7 +34,7 @@ function PasswordReCheck({onModalViewChange}: PasswordReCheckProps) {
   const accessToken = cookies[ACCESS_TOKEN];
   
   // variable: 확인 버튼 활성화 //
-  const isPasswordReCheckActive = inputPassword;
+  const isPasswordReCheckActive = inputPassword !== '';
   
   // variable: 버튼 클래스 //
   const buttonCalss = `button ${isPasswordReCheckActive ? 'able' : 'disable'}`;
@@ -78,6 +78,7 @@ function PasswordReCheck({onModalViewChange}: PasswordReCheckProps) {
 
   // event handler: 확인 버튼 클릭 이벤트 처리 //
   const onCheckButtonClickHandler = () => {
+    if(!isPasswordReCheckActive) return;
     const requestBody: PasswordReCheckRequestDto = {
       inputPassword
     }
