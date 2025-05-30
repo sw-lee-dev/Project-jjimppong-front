@@ -51,11 +51,27 @@
   cursor: pointer;
 }
 
+#board-detail-wrapper .board-image-box {
+  display: flex;
+  justify-content: center;
+
+  padding: 10px;
+}
+
+#board-detail-wrapper .board-image {
+  width: 500px;
+  height: 500px;
+
+  background-position: 50% 50%;
+  background-size: 100% 100%;
+}
+
 #board-detail-wrapper .post-content {
   border-top: solid 1px gray;
   border-bottom: solid 1px gray;
-  min-height: 100vh;
+  display: block;
   margin: 20px 0;
+  padding: 50px 0;
   font-size: 16px;
 }
 

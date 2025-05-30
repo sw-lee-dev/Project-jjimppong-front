@@ -32,7 +32,7 @@ function NaverMap() {
         .replace(/시|군|구/g, "")
         .trim();
 
-        //TODO: 축제 API 인증 후 출력 원할 시 활성화
+  //TODO: 축제 API 인증 후 출력 원할 시 활성화
   // const token = 'token 발급받은 토큰';
   // localStorage.setItem('authToken', token);
 
@@ -43,10 +43,8 @@ function NaverMap() {
             // 배포용
             const res = await fetch(`${API_DOMAIN}/api/festivals?areaCode=${areaCode}&sigunguCode=${sigunguCode}`
             //TODO: 축제 API 인증 후 출력 원할 시 활성화
-            //   , {
-            //   headers: { 'Authorization': `Bearer ${token}` },
-            // }
-          );
+            // , {headers: { 'Authorization': `Bearer ${token}` }}
+            );
             if (!res.ok) throw new Error("축제 데이터 가져오기 실패");
             const data = await res.json();
             return Array.isArray(data) ? data : [];

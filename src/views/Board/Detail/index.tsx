@@ -119,11 +119,14 @@ export default function BoardDetail() {
   // variable: accessToken //
   const accessToken = cookies[ACCESS_TOKEN];
   
+  // variable: boardImage 스타일 //
+  const boardImageStyle = { backgroundImage: `url(${boardImage})` };
+
   // variable: 찜 여부 //
   const isGoods = goods.includes(userId);
   // variable: 찜 클래스 //
   const goodClass = isGoods ? 'icon good' : 'icon good-empty';
-
+  
   // variable: 싫어요 여부 //
   const isHates = hates.includes(userId);
   // variable: 싫어요 클래스 //
@@ -442,8 +445,8 @@ export default function BoardDetail() {
         </div>
 
         {boardImage && (
-          <div className="board-image">
-            <img src={boardImage} alt="게시글 이미지" />
+          <div className="board-image-box">
+            <div className='board-image' style={boardImageStyle}></div>
           </div>
         )}
 
