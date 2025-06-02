@@ -1,0 +1,14 @@
+.error-page {
+  display: flex;
+  flex-direction: column;
+  padding: 100px 0 0 50px;
+
+  font-size: 40px;
+  font-weight: bold;
+}
+
+.error-page .error-list {
+  display: flex;
+  font-weight: normal;
+  font-size: 30px;
+}

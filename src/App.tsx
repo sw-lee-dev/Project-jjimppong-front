@@ -13,6 +13,7 @@ import BoardDetail from './views/Board/Detail';
 import BoardUpdate from './views/Board/Update';
 import MyPagePasswordCheck from './views/MyPage/PasswordCheck';
 import MyPageMain from './views/MyPage';
+import Error from './views/Error';
 
 function App() {
   return (
@@ -37,7 +38,7 @@ function App() {
           <Route path={MY_PAGE_MAIN_PATH} element={<MyPageMain />} />
         </Route>
 
-        <Route path={OTHERS_PATH} element={<>404 페이지</>} />
+        <Route path={OTHERS_PATH} element={<Error />} />
       </Route>
     </Routes>
   );
