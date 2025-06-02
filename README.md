@@ -5,9 +5,6 @@
 
 ![alt text](README.png)
 
-<div align="center">
-<h3><a href="http:///" target="_blank">배포 링크 - http:///</a></h3></div>
-
 
 ## 📖 프로젝트 개요
 지역 주민들의 생생한 여행·지역 정보를 공유하는 커뮤니티 서비스.  
@@ -53,9 +50,9 @@ npm run build
 ## 📦 환경 변수 설정
 ```bash
 # .env 파일
-REACT_APP_API_DOMAIN=http://localhost:4000
-REACT_APP_API_URL=http://localhost:3000
-REACT_APP_NAVER_CLIENT_ID=zgdo8rbm3b
+REACT_APP_API_DOMAIN=http://localhost
+REACT_APP_API_URL=http://localhost
+REACT_APP_NAVER_CLIENT_ID=client_id
 ```
 
 ## 🗂️ 폴더 구조
